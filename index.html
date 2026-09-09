@@ -37,6 +37,18 @@
       overflow-x: hidden;
     }
 
+    /* Barra di progresso dello scorrimento */
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), #60a5fa);
+      width: 0%;
+      z-index: 1000;
+      transition: width 0.1s ease-out;
+    }
+
     .container {
       max-width: 720px;
       width: 100%;
@@ -59,7 +71,6 @@
       opacity: 0;
     }
 
-    /* Delay sfalsati per effetto a cascata */
     .delay-1 { animation-delay: 0.1s; }
     .delay-2 { animation-delay: 0.2s; }
     .delay-3 { animation-delay: 0.3s; }
@@ -106,13 +117,34 @@
       color: #ffffff;
     }
 
+    .profile-header .title-container {
+      margin: 6px 0 20px;
+      height: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
     .profile-header .title {
       color: var(--accent);
       font-weight: 700;
-      margin: 6px 0 20px;
       font-size: 1rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
+    }
+
+    .typing-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1rem;
+      background-color: var(--accent);
+      margin-left: 4px;
+      animation: blink 0.8s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
     }
 
     .contact-grid {
@@ -132,6 +164,14 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: background-color 0.2s ease;
+    }
+
+    .contact-item:hover {
+      background-color: var(--card-inner);
     }
 
     .contact-item i {
@@ -228,18 +268,19 @@
       background-color: var(--border);
     }
 
-    /* CARDS CON HOVER ANIMATO */
+    /* CARDS CON HOVER ANIMATO & TILT */
     .card {
       background-color: var(--card-bg);
       padding: 22px;
       border-radius: 12px;
       margin-bottom: 16px;
       border: 1px solid var(--border);
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+      transition: transform 0.2s ease-out, border-color 0.3s ease, box-shadow 0.3s ease;
+      transform-style: preserve-3d;
+      perspective: 1000px;
     }
 
     .card:hover {
-      transform: translateY(-4px);
       border-color: rgba(56, 189, 248, 0.4);
       box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.5);
     }
@@ -298,6 +339,31 @@
       margin-bottom: 6px;
     }
 
+    /* FILTRI COMPETENZE */
+    .skills-filter {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .filter-btn {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      background-color: var(--accent);
+      color: #0b0f19;
+      border-color: var(--accent);
+    }
+
     /* SKILLS & TAGS ANIMATI */
     .skills-block {
       background-color: var(--card-inner);
@@ -305,10 +371,15 @@
       border-radius: 8px;
       margin-bottom: 12px;
       border: 1px solid var(--border);
+      transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
     .skills-block:last-child {
       margin-bottom: 0;
+    }
+
+    .skills-block.hidden {
+      display: none;
     }
 
     .skills-label {
@@ -440,11 +511,34 @@
       box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
     }
 
+    /* TOAST NOTIFICATION */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background-color: var(--accent);
+      color: #0b0f19;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    #toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
     @media print {
       body { background-color: #ffffff !important; color: #000000 !important; padding: 0; }
       .container { max-width: 100%; }
       .animate-entry { opacity: 1 !important; transform: none !important; animation: none !important; }
-      .lang-btn, .action-buttons, .card-links, .form-contact, #back-to-top { display: none !important; }
+      .lang-btn, .action-buttons, .card-links, .form-contact, #back-to-top, #progress-bar, .skills-filter { display: none !important; }
       .profile-header, .card, .skills-block {
         background-color: #ffffff !important;
         border: 1px solid #cbd5e1 !important;
@@ -460,6 +554,8 @@
 </head>
 <body>
 
+  <div id="progress-bar"></div>
+
   <div class="container">
 
     <!-- PROFILO PRINCIPALE -->
@@ -471,20 +567,22 @@
       <img src="foto-profilo2.jpg" alt="Pasquale Zaccagnino" class="profile-avatar">
 
       <h1>Pasquale Zaccagnino</h1>
-      <div class="title" data-it="Perito Tecnico Informatico" data-en="Computer Technical Expert">Perito Tecnico Informatico</div>
+      <div class="title-container">
+        <span id="typed-title" class="title" data-it="Perito Tecnico Informatico" data-en="Computer Technical Expert"></span><span class="typing-cursor"></span>
+      </div>
 
       <div class="contact-grid">
         <div class="contact-item">
           <i class="fa-solid fa-location-dot"></i>
           <span>Potenza, Italia</span>
         </div>
-        <div class="contact-item">
+        <div class="contact-item" onclick="copyToClipboard('+393513123775', 'Telefono copiato!')" title="Clicca per copiare">
           <i class="fa-solid fa-phone"></i>
-          <a href="tel:+393513123775">+39 351 312 3775</a>
+          <a href="tel:+393513123775" onclick="event.stopPropagation()">+39 351 312 3775</a>
         </div>
-        <div class="contact-item">
+        <div class="contact-item" onclick="copyToClipboard('pzaccagnino2@gmail.com', 'Email copiata!')" title="Clicca per copiare">
           <i class="fa-solid fa-envelope"></i>
-          <a href="mailto:pzaccagnino2@gmail.com">pzaccagnino2@gmail.com</a>
+          <a href="mailto:pzaccagnino2@gmail.com" onclick="event.stopPropagation()">pzaccagnino2@gmail.com</a>
         </div>
       </div>
 
@@ -568,8 +666,15 @@
     <!-- COMPETENZE TECNICHE E SOFT SKILLS -->
     <div class="section animate-entry delay-6">
       <div class="section-title" data-it="Competenze" data-en="Skills">Competenze</div>
+      
+      <div class="skills-filter">
+        <button class="filter-btn active" onclick="filterSkills('all')" data-it="Tutte" data-en="All">Tutte</button>
+        <button class="filter-btn" onclick="filterSkills('tech')" data-it="Tecniche" data-en="Technical">Tecniche</button>
+        <button class="filter-btn" onclick="filterSkills('soft')" data-it="Soft Skills" data-en="Soft Skills">Soft Skills</button>
+      </div>
+
       <div class="card">
-        <div class="skills-block">
+        <div class="skills-block" data-category="tech">
           <div class="skills-label" data-it="Linguaggi e Tecnologie" data-en="Languages & Technologies">Linguaggi e Tecnologie</div>
           <div class="tags">
             <span class="tag">HTML</span>
@@ -585,7 +690,7 @@
           </div>
         </div>
 
-        <div class="skills-block">
+        <div class="skills-block" data-category="soft">
           <div class="skills-label" data-it="Competenze Personali e Gestionali" data-en="Soft & Personal Skills">Competenze Personali e Gestionali</div>
           <div class="tags">
             <span class="tag" data-it="Problem Solving" data-en="Problem Solving">Problem Solving</span>
@@ -652,9 +757,42 @@
     <i class="fa-solid fa-arrow-up"></i>
   </button>
 
+  <div id="toast">Copiato!</div>
+
   <script>
     let currentLang = 'it';
+    let typingTimeout;
 
+    // 1. EFFETTO SCRITTURA AUTOMATICA (Typing Effect)
+    function typeEffect(element, text, speed = 50) {
+      let index = 0;
+      element.innerHTML = '';
+      clearTimeout(typingTimeout);
+
+      function type() {
+        if (index < text.length) {
+          element.innerHTML += text.charAt(index);
+          index++;
+          typingTimeout = setTimeout(type, speed);
+        }
+      }
+      type();
+    }
+
+    function updateTitleText() {
+      const titleEl = document.getElementById('typed-title');
+      if (titleEl) {
+        const textToType = titleEl.getAttribute(`data-${currentLang}`);
+        typeEffect(titleEl, textToType, 60);
+      }
+    }
+
+    // Initialize typing title on load
+    document.addEventListener('DOMContentLoaded', () => {
+      updateTitleText();
+    });
+
+    // 2. CAMBIO LINGUA
     function toggleLanguage() {
       currentLang = currentLang === 'it' ? 'en' : 'it';
       
@@ -665,17 +803,31 @@
 
       const elements = document.querySelectorAll('[data-it][data-en]');
       elements.forEach(el => {
-        const targetText = el.getAttribute(`data-${currentLang}`);
-        if (targetText) {
-          el.innerText = targetText;
+        if (el.id !== 'typed-title') {
+          const targetText = el.getAttribute(`data-${currentLang}`);
+          if (targetText) {
+            el.innerText = targetText;
+          }
         }
       });
+
+      updateTitleText();
     }
 
+    // 3. BARRA DI PROGRESSO DELLO SCORRIMENTO E BOTTONE BACK TO TOP
     const backToTopBtn = document.getElementById('back-to-top');
+    const progressBar = document.getElementById('progress-bar');
 
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 300) {
+      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const currentScroll = window.scrollY;
+      const scrolledPercentage = (currentScroll / totalScroll) * 100;
+      
+      if (progressBar) {
+        progressBar.style.width = scrolledPercentage + '%';
+      }
+
+      if (currentScroll > 300) {
         backToTopBtn.classList.add('show');
       } else {
         backToTopBtn.classList.remove('show');
@@ -686,6 +838,54 @@
       window.scrollTo({
         top: 0,
         behavior: 'smooth'
+      });
+    }
+
+    // 4. EFFETTO TILT 3D SULLE CARD
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const rotateX = ((y - centerY) / centerY) * -4;
+        const rotateY = ((x - centerX) / centerX) * 4;
+        
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+      });
+    });
+
+    // 5. FILTRO COMPETENZE
+    function filterSkills(category) {
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      const blocks = document.querySelectorAll('.skills-block[data-category]');
+      blocks.forEach(block => {
+        if (category === 'all' || block.getAttribute('data-category') === category) {
+          block.classList.remove('hidden');
+        } else {
+          block.classList.add('hidden');
+        }
+      });
+    }
+
+    // 6. COPIA NEGLI APPUNTI CON TOAST
+    function copyToClipboard(text, message) {
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById('toast');
+        toast.innerText = message;
+        toast.classList.add('show');
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 2000);
       });
     }
   </script>
