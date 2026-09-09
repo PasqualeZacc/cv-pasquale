@@ -37,7 +37,7 @@
       overflow-x: hidden;
     }
 
-    /* Barra di progresso dello scorrimento */
+    /* BARRA DI PROGRESSO DELLO SCORRIMENTO */
     #progress-bar {
       position: fixed;
       top: 0;
@@ -54,7 +54,7 @@
       width: 100%;
     }
 
-    /* ANIMAZIONI CSS */
+    /* ANIMAZIONI CSS INGRESSO */
     @keyframes fadeInUp {
       from {
         opacity: 0;
@@ -165,7 +165,7 @@
       align-items: center;
       gap: 8px;
       cursor: pointer;
-      padding: 4px 8px;
+      padding: 6px 10px;
       border-radius: 6px;
       transition: background-color 0.2s ease;
     }
@@ -198,14 +198,17 @@
     .btn {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
       background-color: var(--accent);
       color: #0b0f19;
-      padding: 8px 16px;
+      padding: 10px 18px;
       border-radius: 8px;
       text-decoration: none;
       font-weight: 600;
       font-size: 0.85rem;
+      min-height: 44px;
+      touch-action: manipulation;
       transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, background-color 0.2s ease;
     }
 
@@ -235,6 +238,8 @@
       cursor: pointer;
       font-weight: 600;
       font-size: 0.8rem;
+      min-height: 38px;
+      touch-action: manipulation;
       transition: all 0.2s ease;
     }
 
@@ -344,17 +349,20 @@
       display: flex;
       gap: 8px;
       margin-bottom: 12px;
+      flex-wrap: wrap;
     }
 
     .filter-btn {
       background-color: var(--card-bg);
       border: 1px solid var(--border);
       color: var(--text-muted);
-      padding: 4px 12px;
+      padding: 6px 14px;
       border-radius: 6px;
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       font-weight: 600;
       cursor: pointer;
+      min-height: 38px;
+      touch-action: manipulation;
       transition: all 0.2s ease;
     }
 
@@ -389,6 +397,12 @@
       letter-spacing: 0.05em;
       color: var(--accent);
       margin-bottom: 10px;
+    }
+
+    .skills-text-item {
+      margin: 0;
+      color: var(--text-main);
+      font-size: 0.92rem;
     }
 
     .tags {
@@ -460,7 +474,7 @@
       border-radius: 8px;
       color: var(--text-main);
       font-family: inherit;
-      font-size: 0.92rem;
+      font-size: 16px; /* Evita lo zoom automatico su dispositivi iOS */
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
@@ -471,6 +485,14 @@
       box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
     }
 
+    .btn-submit {
+      width: 100%;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      padding: 12px;
+    }
+
     .footer-note {
       text-align: center;
       font-size: 0.78rem;
@@ -479,6 +501,7 @@
       padding: 10px;
     }
 
+    /* PULSANTE BACK TO TOP */
     #back-to-top {
       position: fixed;
       bottom: 24px;
@@ -534,6 +557,67 @@
       opacity: 1;
     }
 
+    /* STILI OTTIMIZZATI PER SMARTPHONE (MOBILE-FIRST RESPONSIVE) */
+    @media (max-width: 640px) {
+      body {
+        padding: 16px 10px;
+      }
+
+      .profile-header {
+        padding: 48px 16px 24px;
+      }
+
+      .lang-btn {
+        top: 12px;
+        right: 12px;
+      }
+
+      .contact-grid {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+
+      .contact-item {
+        justify-content: center;
+        padding: 8px;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+
+      .badge-date {
+        align-self: flex-start;
+      }
+
+      .card-links {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .skills-filter {
+        justify-content: space-between;
+      }
+
+      .filter-btn {
+        flex: 1;
+        text-align: center;
+      }
+    }
+
+    /* STILI STAMPA PDF */
     @media print {
       body { background-color: #ffffff !important; color: #000000 !important; padding: 0; }
       .container { max-width: 100%; }
@@ -554,6 +638,7 @@
 </head>
 <body>
 
+  <!-- Barra di progresso scorrimento pagina -->
   <div id="progress-bar"></div>
 
   <div class="container">
@@ -718,7 +803,7 @@
           <label for="message" data-it="Messaggio:" data-en="Message:">Messaggio:</label>
           <textarea id="message" name="message" rows="4" placeholder="Scrivi qui il tuo messaggio..." required></textarea>
         </div>
-        <button type="submit" class="btn" style="width: 100%; justify-content: center; border: none; cursor: pointer; padding: 12px;">
+        <button type="submit" class="btn btn-submit">
           <i class="fa-solid fa-paper-plane"></i> <span data-it="Invia Messaggio" data-en="Send Message">Invia Messaggio</span>
         </button>
       </form>
@@ -730,7 +815,7 @@
       <div class="card">
         <div class="skills-block">
           <div class="skills-label" data-it="Lingue" data-en="Languages">Lingue</div>
-          <p style="margin: 0; color: var(--text-main); font-size: 0.92rem;">
+          <p class="skills-text-item">
             <strong>🇮🇹 <span data-it="Italiano:" data-en="Italian:">Italiano:</span></strong> <span data-it="Madrelingua" data-en="Native">Madrelingua</span> &nbsp;|&nbsp; 
             <strong>🇬🇧 <span data-it="Inglese:" data-en="English:">Inglese:</span></strong> <span data-it="Livello Intermedio" data-en="Intermediate">Livello Intermedio</span>
           </p>
@@ -738,7 +823,7 @@
 
         <div class="skills-block">
           <div class="skills-label" data-it="Interessi" data-en="Interests">Interessi</div>
-          <p style="margin: 0; color: var(--text-main); font-size: 0.92rem;"
+          <p class="skills-text-item"
              data-it="Forte interesse per il settore Tech, l'evoluzione hardware/software e la cultura del videogioco come punto d'incontro tra logica, creatività e tecnologia applicata."
              data-en="Strong interest in the Tech sector, hardware/software evolution, and gaming culture as a point of intersection between logic, creativity, and applied technology.">
             Forte interesse per il settore Tech, l'evoluzione hardware/software e la cultura del videogioco come punto d'incontro tra logica, creatività e tecnologia applicata.
@@ -763,7 +848,7 @@
     let currentLang = 'it';
     let typingTimeout;
 
-    // 1. EFFETTO SCRITTURA AUTOMATICA & GESTIONE TITOLO
+    // 1. EFFETTO SCRITTURA AUTOMATICA (TYPING EFFECT)
     function updateTitleText() {
       const titleEl = document.getElementById('typed-title');
       if (!titleEl) return;
@@ -783,7 +868,7 @@
       type();
     }
 
-    // 2. CAMBIO LINGUA
+    // 2. CAMBIO LINGUA (ITALIANO / INGLESE)
     function toggleLanguage() {
       currentLang = currentLang === 'it' ? 'en' : 'it';
       
@@ -802,10 +887,9 @@
       updateTitleText();
     }
 
-    // Initialize layout on page load
     document.addEventListener('DOMContentLoaded', updateTitleText);
 
-    // 3. SCROLL & BACK TO TOP
+    // 3. BARRA DI PROGRESSO SCORRIMENTO & BOTTONE "TORNA IN ALTO"
     const backToTopBtn = document.getElementById('back-to-top');
     const progressBar = document.getElementById('progress-bar');
 
@@ -843,7 +927,7 @@
       });
     });
 
-    // 5. FILTRO COMPETENZE
+    // 5. FILTRO DINAMICO PER LE COMPETENZE
     function filterSkills(category, btnElement) {
       document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
       if (btnElement) btnElement.classList.add('active');
@@ -854,7 +938,7 @@
       });
     }
 
-    // 6. COPIA NEGLI APPUNTI CON TOAST
+    // 6. COPIA NEGLI APPUNTI CON NOTIFICA TOAST
     function copyToClipboard(text, message) {
       navigator.clipboard.writeText(text).then(() => {
         const toast = document.getElementById('toast');
