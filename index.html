@@ -1,30 +1,38 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
+  <!-- Impostazioni dei metadati principali del documento -->
   <meta charset="UTF-8">
+  <!-- Layout responsive per una corretta visualizzazione su tutti i dispositivi (mobile, tablet, desktop) -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pasquale Zaccagnino - Curriculum Vitae</title>
   
-  <!-- Icone Font Awesome -->
+  <!-- Inclusione della libreria esterna Font Awesome (v6.5.1) per le icone social e di contatto -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <style>
+    /* ==========================================================================
+       1. VARIABILI GLOBALI (CSS Custom Properties)
+       Permettono di gestire facilmente la palette dei colori e il tema scuro.
+       ========================================================================== */
     :root {
-      --bg: #0b0f19;
-      --card-bg: #151d2a;
-      --card-inner: #1a2332;
-      --text-main: #f1f5f9;
-      --text-muted: #94a3b8;
-      --accent: #38bdf8;
-      --accent-hover: #0284c7;
-      --border: #263346;
-      --tag-bg: #1e293b;
+      --bg: #0b0f19;          /* Sfondo generale della pagina (Dark Theme) */
+      --card-bg: #151d2a;     /* Colore di sfondo delle schede/card principali */
+      --card-inner: #1a2332;  /* Colore di sfondo per blocchi interni o riquadri di secondo livello */
+      --text-main: #f1f5f9;   /* Colore del testo principale (chiaro) */
+      --text-muted: #94a3b8;  /* Colore del testo secondario/disattivato */
+      --accent: #38bdf8;      /* Colore d'accento primario (Azzurro/Cyan) */
+      --accent-hover: #0284c7;/* Colore d'accento per lo stato di hover/pressione */
+      --border: #263346;      /* Colore dei bordi e dei divisori */
+      --tag-bg: #1e293b;      /* Sfondo delle etichette (tag competenze) */
     }
 
+    /* Reset del box model per garantire un calcolo coerente delle dimensioni dei componenti */
     * {
       box-sizing: border-box;
     }
 
+    /* Stili generali del corpo della pagina */
     body {
       font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
       background-color: var(--bg);
@@ -34,27 +42,34 @@
       display: flex;
       justify-content: center;
       line-height: 1.6;
-      overflow-x: hidden;
+      overflow-x: hidden; /* Evita lo scorrimento orizzontale indesiderato */
     }
 
-    /* BARRA DI PROGRESSO DELLO SCORRIMENTO */
+    /* ==========================================================================
+       2. BARRA DI PROGRESSO DELLO SCORRIMENTO (Progress Bar)
+       Mostra visivamente la percentuale di scorrimento della pagina in alto.
+       ========================================================================== */
     #progress-bar {
       position: fixed;
       top: 0;
       left: 0;
       height: 3px;
       background: linear-gradient(90deg, var(--accent), #60a5fa);
-      width: 0%;
+      width: 0%; /* La larghezza viene aggiornata via JavaScript durante lo scroll */
       z-index: 1000;
       transition: width 0.1s ease-out;
     }
 
+    /* Contenitore principale a larghezza limitata per centrare il contenuto */
     .container {
       max-width: 720px;
       width: 100%;
     }
 
-    /* ANIMAZIONI CSS INGRESSO */
+    /* ==========================================================================
+       3. ANIMAZIONI CSS DI INGRESSO (Fade In Up)
+       Effetto di comparsa sfumata dal basso all'avvio della pagina.
+       ========================================================================== */
     @keyframes fadeInUp {
       from {
         opacity: 0;
@@ -68,9 +83,10 @@
 
     .animate-entry {
       animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      opacity: 0;
+      opacity: 0; /* Nasconde l'elemento prima dell'inizio dell'animazione */
     }
 
+    /* Ritardi scalati per creare un effetto di comparsa "a cascata" tra i blocchi */
     .delay-1 { animation-delay: 0.1s; }
     .delay-2 { animation-delay: 0.2s; }
     .delay-3 { animation-delay: 0.3s; }
@@ -79,7 +95,9 @@
     .delay-6 { animation-delay: 0.6s; }
     .delay-7 { animation-delay: 0.7s; }
 
-    /* INTESTAZIONE E PROFILO */
+    /* ==========================================================================
+       4. INTESTAZIONE E PROFILO
+       ========================================================================== */
     .profile-header {
       position: relative;
       background-color: var(--card-bg);
@@ -92,6 +110,7 @@
       transition: transform 0.3s ease, border-color 0.3s ease;
     }
 
+    /* Foto profilo circolare con effetto illuminato al passaggio del mouse */
     .profile-avatar {
       width: 108px;
       height: 108px;
@@ -117,6 +136,7 @@
       color: #ffffff;
     }
 
+    /* Contenitore e stile per il titolo professionale dinamico (effetto macchina da scrivere) */
     .profile-header .title-container {
       margin: 6px 0 20px;
       height: 24px;
@@ -133,6 +153,7 @@
       text-transform: uppercase;
     }
 
+    /* Cursore lampeggiante affiancato al testo digitato */
     .typing-cursor {
       display: inline-block;
       width: 2px;
@@ -147,6 +168,7 @@
       50% { opacity: 0; }
     }
 
+    /* Griglia con i dettagli di contatto (luogo, telefono, email) */
     .contact-grid {
       display: flex;
       flex-wrap: wrap;
@@ -188,6 +210,7 @@
       color: var(--accent);
     }
 
+    /* Pulsanti di azione rapidi (Download PDF, LinkedIn, WhatsApp, Instagram) */
     .action-buttons {
       display: flex;
       gap: 10px;
@@ -195,6 +218,7 @@
       flex-wrap: wrap;
     }
 
+    /* Stile base per tutti i pulsanti */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -217,6 +241,7 @@
       box-shadow: 0 6px 16px rgba(56, 189, 248, 0.35);
     }
 
+    /* Personalizzazioni dei colori specifici per ciascun social/servizio */
     .btn-linkedin { background-color: #0a66c2; color: #ffffff; }
     .btn-linkedin:hover { box-shadow: 0 6px 16px rgba(10, 102, 194, 0.45); }
     
@@ -226,6 +251,7 @@
     .btn-instagram { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: #ffffff; }
     .btn-instagram:hover { box-shadow: 0 6px 16px rgba(220, 39, 67, 0.45); }
 
+    /* Pulsante per il cambio lingua posizionato in alto a destra nell'intestazione */
     .lang-btn {
       position: absolute;
       top: 20px;
@@ -249,7 +275,9 @@
       transform: scale(1.05);
     }
 
-    /* SEZIONI E TITOLI */
+    /* ==========================================================================
+       5. SEZIONI E TITOLI DI BLOCCO
+       ========================================================================== */
     .section {
       margin-top: 28px;
     }
@@ -266,6 +294,7 @@
       margin-bottom: 14px;
     }
 
+    /* Linea divisoria orizzontale che si estende a destra del titolo della sezione */
     .section-title::after {
       content: "";
       flex: 1;
@@ -273,7 +302,9 @@
       background-color: var(--border);
     }
 
-    /* CARDS CON HOVER ANIMATO & TILT */
+    /* ==========================================================================
+       6. CARDS/SCHEDE CON EFFETTO HOVER E TILT 3D
+       ========================================================================== */
     .card {
       background-color: var(--card-bg);
       padding: 22px;
@@ -305,6 +336,7 @@
       color: #ffffff;
     }
 
+    /* Badge arrotondato per mostrare la data/periodo */
     .badge-date {
       background-color: var(--tag-bg);
       color: var(--accent);
@@ -344,7 +376,9 @@
       margin-bottom: 6px;
     }
 
-    /* FILTRI COMPETENZE */
+    /* ==========================================================================
+       7. FILTRI E TAG PER LE COMPETENZE
+       ========================================================================== */
     .skills-filter {
       display: flex;
       gap: 8px;
@@ -352,6 +386,7 @@
       flex-wrap: wrap;
     }
 
+    /* Pulsanti di filtraggio delle competenze (Tutte / Tecniche / Soft) */
     .filter-btn {
       background-color: var(--card-bg);
       border: 1px solid var(--border);
@@ -372,7 +407,7 @@
       border-color: var(--accent);
     }
 
-    /* SKILLS & TAGS ANIMATI */
+    /* Blocco interno contenente le liste di tag */
     .skills-block {
       background-color: var(--card-inner);
       padding: 16px;
@@ -386,6 +421,7 @@
       margin-bottom: 0;
     }
 
+    /* Classe usata da JS per nascondere i blocchi filtrati */
     .skills-block.hidden {
       display: none;
     }
@@ -411,6 +447,7 @@
       gap: 8px;
     }
 
+    /* Singola etichetta/badge per le tecnologie e skill */
     .tag {
       background-color: var(--tag-bg);
       color: var(--text-main);
@@ -452,7 +489,9 @@
       transform: translateX(3px);
     }
 
-    /* MODULO DI CONTATTO */
+    /* ==========================================================================
+       8. FORM DI CONTATTO
+       ========================================================================== */
     .form-contact .form-group {
       margin-bottom: 16px;
     }
@@ -501,7 +540,9 @@
       padding: 10px;
     }
 
-    /* PULSANTE BACK TO TOP */
+    /* ==========================================================================
+       9. PULSANTE "TORNA IN ALTO" E NOTIFICA TOAST
+       ========================================================================== */
     #back-to-top {
       position: fixed;
       bottom: 24px;
@@ -534,7 +575,7 @@
       box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
     }
 
-    /* TOAST NOTIFICATION */
+    /* Toast popup che appare quando si copia un testo (telefono o email) */
     #toast {
       position: fixed;
       bottom: 24px;
@@ -557,7 +598,9 @@
       opacity: 1;
     }
 
-    /* RESPONSIVE MOBILE */
+    /* ==========================================================================
+       10. STILI RESPONSIVE PER SMARTPHONE E TABLET (< 640px)
+       ========================================================================== */
     @media (max-width: 640px) {
       body {
         padding: 16px 10px;
@@ -617,7 +660,10 @@
       }
     }
 
-    /* STILI STAMPA PDF */
+    /* ==========================================================================
+       11. STILI DI STAMPA / SALVATAGGIO IN PDF
+       Nasconde elementi inutili sulla carta (pulsanti, form) e imposta uno sfondo bianco.
+       ========================================================================== */
     @media print {
       body { background-color: #ffffff !important; color: #000000 !important; padding: 0; }
       .container { max-width: 100%; }
@@ -638,24 +684,30 @@
 </head>
 <body>
 
-  <!-- Barra di progresso scorrimento pagina -->
+  <!-- Elemento per la barra di progresso di scorrimento superiore -->
   <div id="progress-bar"></div>
 
+  <!-- Contenitore centrale del CV -->
   <div class="container">
 
-    <!-- PROFILO PRINCIPALE -->
+    <!-- SEZIONE 1: PROFILO PRINCIPALE ED INTESTAZIONE -->
     <div class="profile-header animate-entry delay-1">
+      <!-- Pulsante per alternare la lingua IT/EN -->
       <button id="lang-toggle" class="lang-btn" onclick="toggleLanguage()">
         🌐 <span id="lang-text">English</span>
       </button>
 
+      <!-- Foto profilo -->
       <img src="foto-profilo2.jpg" alt="Pasquale Zaccagnino" class="profile-avatar">
 
       <h1>Pasquale Zaccagnino</h1>
+      
+      <!-- Titolo con effetto macchina da scrivere e attributi multilingua -->
       <div class="title-container">
         <span id="typed-title" class="title" data-it="Perito Tecnico Informatico" data-en="Computer Technical Expert"></span><span class="typing-cursor"></span>
       </div>
 
+      <!-- Dettagli di contatto con opzione di copia rapida al click -->
       <div class="contact-grid">
         <div class="contact-item">
           <i class="fa-solid fa-location-dot"></i>
@@ -671,6 +723,7 @@
         </div>
       </div>
 
+      <!-- Pulsanti d'azione (Scarica PDF e collegamenti esterni) -->
       <div class="action-buttons">
         <a href="javascript:window.print()" class="btn">
           <i class="fa-solid fa-file-pdf"></i> <span data-it="Scarica CV (PDF)" data-en="Download CV (PDF)">Scarica CV (PDF)</span>
@@ -687,7 +740,7 @@
       </div>
     </div>
 
-    <!-- PROFILO PROFESSIONALE -->
+    <!-- SEZIONE 2: PROFILO PROFESSIONALE (BIO) -->
     <div class="section animate-entry delay-2">
       <div class="section-title" data-it="Profilo Professionale" data-en="Professional Profile">Profilo Professionale</div>
       <div class="card">
@@ -699,7 +752,7 @@
       </div>
     </div>
 
-    <!-- ESPERIENZA LAVORATIVA -->
+    <!-- SEZIONE 3: ESPERIENZA PROFESSIONALE -->
     <div class="section animate-entry delay-3">
       <div class="section-title" data-it="Esperienza Professionale" data-en="Work Experience">Esperienza Professionale</div>
       <div class="card">
@@ -716,7 +769,7 @@
       </div>
     </div>
 
-    <!-- PROGETTI E PORTFOLIO -->
+    <!-- SEZIONE 4: PROGETTI E PORTFOLIO -->
     <div class="section animate-entry delay-4">
       <div class="section-title" data-it="Progetti" data-en="Projects">Progetti</div>
       <div class="card">
@@ -735,7 +788,7 @@
       </div>
     </div>
 
-    <!-- ISTRUZIONE E FORMAZIONE -->
+    <!-- SEZIONE 5: ISTRUZIONE E FORMAZIONE -->
     <div class="section animate-entry delay-5">
       <div class="section-title" data-it="Istruzione e Formazione" data-en="Education">Istruzione e Formazione</div>
       <div class="card">
@@ -747,10 +800,11 @@
       </div>
     </div>
 
-    <!-- COMPETENZE TECNICHE E SOFT SKILLS -->
+    <!-- SEZIONE 6: COMPETENZE TECNICHE E SOFT SKILLS -->
     <div class="section animate-entry delay-6">
       <div class="section-title" data-it="Competenze" data-en="Skills">Competenze</div>
       
+      <!-- Pulsanti di filtro rapido -->
       <div class="skills-filter">
         <button class="filter-btn active" onclick="filterSkills('all', this)" data-it="Tutte" data-en="All">Tutte</button>
         <button class="filter-btn" onclick="filterSkills('tech', this)" data-it="Tecniche" data-en="Technical">Tecniche</button>
@@ -758,6 +812,7 @@
       </div>
 
       <div class="card">
+        <!-- Blocco Competenze Tecniche -->
         <div class="skills-block" data-category="tech">
           <div class="skills-label" data-it="Linguaggi e Tecnologie" data-en="Languages & Technologies">Linguaggi e Tecnologie</div>
           <div class="tags">
@@ -774,6 +829,7 @@
           </div>
         </div>
 
+        <!-- Blocco Soft Skills -->
         <div class="skills-block" data-category="soft">
           <div class="skills-label" data-it="Competenze Personali e Gestionali" data-en="Soft & Personal Skills">Competenze Personali e Gestionali</div>
           <div class="tags">
@@ -790,7 +846,7 @@
       </div>
     </div>
 
-    <!-- MODULO DI CONTATTO -->
+    <!-- SEZIONE 7: MODULO DI CONTATTO -->
     <div class="section animate-entry delay-7">
       <div class="section-title" data-it="Invia un Messaggio Diretto" data-en="Send a Direct Message">Invia un Messaggio Diretto</div>
       <form action="https://formspree.io/f/TUO_FORM_ID" method="POST" class="card form-contact">
@@ -808,7 +864,7 @@
       </form>
     </div>
 
-    <!-- LINGUE & INTERESSI -->
+    <!-- SEZIONE 8: LINGUE E INTERESSI -->
     <div class="section animate-entry delay-7">
       <div class="section-title" data-it="Lingue & Interessi" data-en="Languages & Interests">Lingue & Interessi</div>
       <div class="card">
@@ -831,119 +887,167 @@
       </div>
     </div>
 
+    <!-- Nota sulla privacy GDPR a piè di pagina -->
     <div class="footer-note animate-entry delay-7" data-it="Autorizzo il trattamento dei miei dati personali ai sensi del GDPR (Regolamento UE 2016/679)." data-en="I authorize the processing of personal data in accordance with GDPR (EU Regulation 2016/679).">
       Autorizzo il trattamento dei miei dati personali ai sensi del GDPR (Regolamento UE 2016/679).
     </div>
 
   </div>
 
+  <!-- Pulsante "Torna in alto" -->
   <button id="back-to-top" onclick="scrollToTop()" title="Torna in alto">
     <i class="fa-solid fa-arrow-up"></i>
   </button>
 
+  <!-- Notifica Toast per avvisare dell'avvenuta copia del testo negli appunti -->
   <div id="toast">Copiato!</div>
 
+  <!-- ==========================================================================
+     JAVASCRIPT: LOGICA DI INTERATTIVITÀ
+     ========================================================================== -->
   <script>
+    // Variabile di stato per la lingua corrente ('it' o 'en')
     let currentLang = 'it';
+    // Riferimento al timer dell'effetto scrittura per poterlo resettare
     let typingTimeout;
 
-    // 1. EFFETTO SCRITTURA AUTOMATICA (TYPING EFFECT)
+    /**
+     * 1. EFFETTO DIGITAZIONE AUTOMATICA (Typing Effect)
+     * Scrive il titolo professionale carattere per carattere.
+     */
     function updateTitleText() {
       const titleEl = document.getElementById('typed-title');
       if (!titleEl) return;
       
+      // Resetta eventuali iterazioni di scrittura in corso
       clearTimeout(typingTimeout);
+      
+      // Recupera la stringa corretta in base alla lingua impostata
       const text = titleEl.getAttribute(`data-${currentLang}`) || '';
       let index = 0;
       titleEl.innerHTML = '';
 
+      // Funzione ricorsiva per aggiungere una lettera alla volta
       function type() {
         if (index < text.length) {
           titleEl.innerHTML += text.charAt(index);
           index++;
-          typingTimeout = setTimeout(type, 60);
+          typingTimeout = setTimeout(type, 60); // Velocità di scrittura (60ms)
         }
       }
       type();
     }
 
-    // 2. CAMBIO LINGUA (ITALIANO / INGLESE)
+    /**
+     * 2. GESTIONE CAMBIO LINGUA (Italiano <-> Inglese)
+     * Scambia la lingua corrente e aggiorna tutti i testi marcati con data-it e data-en.
+     */
     function toggleLanguage() {
+      // Inverte lo stato della lingua
       currentLang = currentLang === 'it' ? 'en' : 'it';
       
+      // Aggiorna la scritta sul pulsante di cambio lingua
       const langText = document.getElementById('lang-text');
       if (langText) {
         langText.innerText = currentLang === 'it' ? 'English' : 'Italiano';
       }
 
+      // Cicla su tutti gli elementi con traduzione dinamica e ne sostituisce il testo
       document.querySelectorAll('[data-it][data-en]').forEach(el => {
-        if (el.id !== 'typed-title') {
+        if (el.id !== 'typed-title') { // Il titolo principale viene gestito separatamente via typing effect
           const targetText = el.getAttribute(`data-${currentLang}`);
           if (targetText) el.innerText = targetText;
         }
       });
 
+      // Riavvia l'effetto scrittura per il titolo aggiornato nella nuova lingua
       updateTitleText();
     }
 
+    // Inizializza l'effetto macchina da scrivere al caricamento del DOM
     document.addEventListener('DOMContentLoaded', updateTitleText);
 
-    // 3. BARRA DI PROGRESSO SCORRIMENTO & BOTTONE "TORNA IN ALTO"
+    /**
+     * 3. BARRA DI PROGRESSO SCORRIMENTO & PULSANTE "TORNA IN ALTO"
+     * Evento agganciato allo scroll della finestra.
+     */
     const backToTopBtn = document.getElementById('back-to-top');
     const progressBar = document.getElementById('progress-bar');
 
     window.addEventListener('scroll', () => {
+      // Calcola l'altezza massima scorribile della pagina
       const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
       const currentScroll = window.scrollY;
       
+      // Aggiorna la larghezza della progress bar in alto in percentuale
       if (progressBar && totalScroll > 0) {
         progressBar.style.width = (currentScroll / totalScroll * 100) + '%';
       }
 
+      // Mostra o nasconde il pulsante "Torna in alto" dopo 300px di scorrimento
       if (backToTopBtn) {
         backToTopBtn.classList.toggle('show', currentScroll > 300);
       }
     });
 
+    /**
+     * Esegue lo scorrimento fluido verso l'inizio della pagina.
+     */
     function scrollToTop() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // 4. EFFETTO TILT 3D SULLE CARD
+    /**
+     * 4. EFFETTO TILT 3D SULLE CARD
+     * Calcola la posizione del cursore rispetto al centro della card per inclinarla in 3D.
+     */
     document.querySelectorAll('.card').forEach(card => {
       card.addEventListener('mousemove', (e) => {
         const rect = card.getBoundingClientRect();
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
+        // Inclinazione calcolata proporzionalmente
         const rotateX = ((e.clientY - rect.top - centerY) / centerY) * -4;
         const rotateY = ((e.clientX - rect.left - centerX) / centerX) * 4;
         
         card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
       });
 
+      // Ripristina l'orientamento originale quando il mouse esce dalla scheda
       card.addEventListener('mouseleave', () => {
         card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
       });
     });
 
-    // 5. FILTRO DINAMICO PER LE COMPETENZE
+    /**
+     * 5. FILTRO DINAMICO PER LE COMPETENZE
+     * @param {string} category - Categoria da mostrare ('all', 'tech', 'soft')
+     * @param {HTMLElement} btnElement - Il pulsante cliccato per la gestione dello stato 'active'
+     */
     function filterSkills(category, btnElement) {
+      // Aggiorna lo stato visivo dei pulsanti del filtro
       document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
       if (btnElement) btnElement.classList.add('active');
 
+      // Mostra o nasconde i blocchi di skill in base alla categoria selezionata
       document.querySelectorAll('.skills-block[data-category]').forEach(block => {
         const matches = category === 'all' || block.getAttribute('data-category') === category;
         block.classList.toggle('hidden', !matches);
       });
     }
 
-    // 6. COPIA NEGLI APPUNTI CON NOTIFICA TOAST
+    /**
+     * 6. COPIA DI TESTO NEGLI APPUNTI (Clipboard API)
+     * @param {string} text - Testo da copiare negli appunti
+     * @param {string} message - Messaggio da mostrare nel popup Toast
+     */
     function copyToClipboard(text, message) {
       navigator.clipboard.writeText(text).then(() => {
         const toast = document.getElementById('toast');
         if (toast) {
           toast.innerText = message;
           toast.classList.add('show');
+          // Nasconde la notifica Toast dopo 2 secondi
           setTimeout(() => toast.classList.remove('show'), 2000);
         }
       });
