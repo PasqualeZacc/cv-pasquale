@@ -10,23 +10,15 @@
   
   <style>
     :root {
-      --bg: #0f172a;
-      --card-bg: #1e293b;
-      --text: #f8fafc;
-      --subtext: #94a3b8;
+      --bg: #0b0f19;
+      --card-bg: #151d2a;
+      --card-inner: #1a2332;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
       --accent: #38bdf8;
-      --tag-bg: #334155;
-    }
-
-    .profile2-img {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid var(--accent);
-      margin: 0 auto 16px;
-      display: block;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      --accent-hover: #0284c7;
+      --border: #263346;
+      --tag-bg: #1e293b;
     }
 
     * {
@@ -34,62 +26,131 @@
     }
 
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
       background-color: var(--bg);
-      color: var(--text);
+      color: var(--text-main);
       margin: 0;
-      padding: 20px 12px;
+      padding: 32px 16px;
       display: flex;
       justify-content: center;
-      line-height: 1.5;
+      line-height: 1.6;
+      overflow-x: hidden;
     }
 
     .container {
-      max-width: 650px;
+      max-width: 720px;
       width: 100%;
     }
 
+    /* ANIMAZIONI CSS */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-entry {
+      animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0;
+    }
+
+    /* Delay sfalsati per effetto a cascata */
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+    .delay-5 { animation-delay: 0.5s; }
+    .delay-6 { animation-delay: 0.6s; }
+    .delay-7 { animation-delay: 0.7s; }
+
+    /* INTESTAZIONE E PROFILO */
     .profile-header {
       position: relative;
-      text-align: center;
       background-color: var(--card-bg);
-      padding: 32px 20px 28px;
+      padding: 40px 32px 32px;
       border-radius: 16px;
       margin-bottom: 24px;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .profile-avatar {
+      width: 108px;
+      height: 108px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--accent);
+      margin: 0 auto 20px;
+      display: block;
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.25);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .profile-avatar:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
     }
 
     .profile-header h1 {
       margin: 0;
-      font-size: 1.8rem;
+      font-size: 2.1rem;
+      font-weight: 800;
       letter-spacing: -0.02em;
+      color: #ffffff;
     }
 
     .profile-header .title {
       color: var(--accent);
-      font-weight: 600;
-      margin: 6px 0 16px;
-      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 6px 0 20px;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
-    .contact-info {
+    .contact-grid {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 12px;
+      gap: 16px 24px;
       font-size: 0.9rem;
-      color: var(--subtext);
-      margin-bottom: 20px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      padding: 12px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
     }
 
-    .contact-info span, .contact-info a {
-      color: var(--subtext);
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .contact-item i {
+      color: var(--accent);
+    }
+
+    .contact-grid a {
+      color: var(--text-muted);
       text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .contact-grid a:hover {
+      color: var(--accent);
     }
 
     .action-buttons {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       justify-content: center;
       flex-wrap: wrap;
     }
@@ -99,107 +160,164 @@
       align-items: center;
       gap: 8px;
       background-color: var(--accent);
-      color: #0f172a;
-      padding: 10px 18px;
+      color: #0b0f19;
+      padding: 8px 16px;
       border-radius: 8px;
       text-decoration: none;
       font-weight: 600;
-      font-size: 0.95rem;
-      transition: transform 0.2s, opacity 0.2s;
+      font-size: 0.85rem;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, background-color 0.2s ease;
     }
 
     .btn:hover {
-      opacity: 0.9;
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(56, 189, 248, 0.35);
     }
 
-    /* Stili Pulsanti Social */
-    .btn-linkedin {
-      background-color: #0a66c2;
-      color: #ffffff;
-    }
-    .btn-linkedin:hover {
-      background-color: #084e96;
-      color: #ffffff;
-    }
+    .btn-linkedin { background-color: #0a66c2; color: #ffffff; }
+    .btn-linkedin:hover { box-shadow: 0 6px 16px rgba(10, 102, 194, 0.45); }
+    
+    .btn-whatsapp { background-color: #25D366; color: #ffffff; }
+    .btn-whatsapp:hover { box-shadow: 0 6px 16px rgba(37, 211, 102, 0.45); }
+    
+    .btn-instagram { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: #ffffff; }
+    .btn-instagram:hover { box-shadow: 0 6px 16px rgba(220, 39, 67, 0.45); }
 
-    .btn-whatsapp {
-      background-color: #25D366;
-      color: #ffffff;
-    }
-    .btn-whatsapp:hover {
-      background-color: #20ba5a;
-      color: #ffffff;
-    }
-
-    .btn-instagram {
-      background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-      color: #ffffff;
-    }
-    .btn-instagram:hover {
-      opacity: 0.9;
-      color: #ffffff;
-    }
-
-    /* Pulsante Lingua */
     .lang-btn {
       position: absolute;
-      top: 16px;
-      right: 16px;
+      top: 20px;
+      right: 20px;
       background-color: var(--tag-bg);
-      color: var(--text);
-      border: 1px solid var(--accent);
-      padding: 6px 12px;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
       border-radius: 20px;
       cursor: pointer;
       font-weight: 600;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       transition: all 0.2s ease;
     }
+
     .lang-btn:hover {
-      background-color: var(--accent);
-      color: #0f172a;
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: scale(1.05);
     }
 
+    /* SEZIONI E TITOLI */
     .section {
       margin-top: 28px;
     }
 
     .section-title {
-      font-size: 1.25rem;
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
       color: var(--accent);
-      border-bottom: 2px solid var(--card-bg);
-      padding-bottom: 6px;
-      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
     }
 
+    .section-title::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background-color: var(--border);
+    }
+
+    /* CARDS CON HOVER ANIMATO */
     .card {
       background-color: var(--card-bg);
-      padding: 18px;
+      padding: 22px;
       border-radius: 12px;
       margin-bottom: 16px;
+      border: 1px solid var(--border);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .card h3 {
-      margin: 0 0 4px;
-      font-size: 1.1rem;
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(56, 189, 248, 0.4);
+      box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.5);
     }
 
-    .card .subtitle {
-      color: var(--subtext);
-      font-size: 0.88rem;
-      margin-bottom: 10px;
-    }
-
-    .card ul {
-      margin: 0;
-      padding-left: 18px;
-      color: #cbd5e1;
-      font-size: 0.95rem;
-    }
-
-    .card ul li {
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
       margin-bottom: 6px;
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .badge-date {
+      background-color: var(--tag-bg);
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    .card-subtitle {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      font-weight: 500;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-text {
+      margin: 0;
+      color: var(--text-main);
+      font-size: 0.93rem;
+      line-height: 1.6;
+    }
+
+    .card-list {
+      margin: 10px 0 0;
+      padding-left: 20px;
+      color: var(--text-main);
+      font-size: 0.92rem;
+    }
+
+    .card-list li {
+      margin-bottom: 6px;
+    }
+
+    /* SKILLS & TAGS ANIMATI */
+    .skills-block {
+      background-color: var(--card-inner);
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .skills-block:last-child {
+      margin-bottom: 0;
+    }
+
+    .skills-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      margin-bottom: 10px;
     }
 
     .tags {
@@ -210,76 +328,92 @@
 
     .tag {
       background-color: var(--tag-bg);
-      color: var(--text);
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 0.85rem;
+      color: var(--text-main);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 0.82rem;
       font-weight: 500;
+      border: 1px solid var(--border);
+      transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease;
     }
 
-    .links {
+    .tag:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .card-links {
       display: flex;
-      gap: 12px;
-      margin-top: 12px;
+      gap: 16px;
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
     }
 
-    .links a {
+    .card-links a {
       color: var(--accent);
       text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 500;
+      font-size: 0.88rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s ease, transform 0.2s ease;
     }
 
-    .links a:hover {
-      text-decoration: underline;
+    .card-links a:hover {
+      color: var(--accent-hover);
+      transform: translateX(3px);
     }
 
-    /* Stile Modulo di Contatto */
+    /* MODULO DI CONTATTO */
     .form-contact .form-group {
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
 
     .form-contact label {
       display: block;
-      font-size: 0.88rem;
-      color: var(--subtext);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
       margin-bottom: 6px;
     }
 
     .form-contact input, 
     .form-contact textarea {
       width: 100%;
-      padding: 10px 12px;
+      padding: 12px;
       background-color: var(--bg);
-      border: 1px solid var(--tag-bg);
+      border: 1px solid var(--border);
       border-radius: 8px;
-      color: var(--text);
+      color: var(--text-main);
       font-family: inherit;
-      font-size: 0.95rem;
-      box-sizing: border-box;
+      font-size: 0.92rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .form-contact input:focus, 
     .form-contact textarea:focus {
       outline: none;
       border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
     }
 
     .footer-note {
       text-align: center;
-      font-size: 0.75rem;
-      color: var(--subtext);
-      margin-top: 40px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 36px;
       padding: 10px;
     }
 
-    /* Pulsante Torna Su */
     #back-to-top {
       position: fixed;
       bottom: 24px;
       right: 24px;
       background-color: var(--accent);
-      color: #0f172a;
+      color: #0b0f19;
       border: none;
       border-radius: 50%;
       width: 44px;
@@ -289,10 +423,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
       opacity: 0;
       visibility: hidden;
-      transition: opacity 0.3s, visibility 0.3s, transform 0.2s;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       z-index: 99;
     }
 
@@ -302,50 +436,25 @@
     }
 
     #back-to-top:hover {
-      transform: translateY(-3px);
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
     }
 
-    /* CSS per la Stampa / Salvataggio PDF Pulito */
     @media print {
-      body {
+      body { background-color: #ffffff !important; color: #000000 !important; padding: 0; }
+      .container { max-width: 100%; }
+      .animate-entry { opacity: 1 !important; transform: none !important; animation: none !important; }
+      .lang-btn, .action-buttons, .card-links, .form-contact, #back-to-top { display: none !important; }
+      .profile-header, .card, .skills-block {
         background-color: #ffffff !important;
-        color: #000000 !important;
-        padding: 0;
-      }
-
-      .container {
-        max-width: 100%;
-      }
-
-      .lang-btn, 
-      .action-buttons, 
-      .links, 
-      .form-contact, 
-      #back-to-top {
-        display: none !important;
-      }
-
-      .profile-header, .card {
-        background-color: #ffffff !important;
-        border: 1px solid #ddd !important;
+        border: 1px solid #cbd5e1 !important;
         box-shadow: none !important;
         color: #000000 !important;
       }
-
-      .section-title, .profile-header .title, .card .subtitle {
-        color: #0284c7 !important;
-      }
-
-      .tag {
-        background-color: #f1f5f9 !important;
-        color: #0f172a !important;
-        border: 1px solid #cbd5e1;
-      }
-
-      a {
-        color: #000000 !important;
-        text-decoration: none;
-      }
+      .section-title, .profile-header .title, .card-subtitle, .badge-date, .skills-label { color: #0284c7 !important; }
+      .card-title { color: #000000 !important; }
+      .tag { background-color: #f1f5f9 !important; color: #0f172a !important; border: 1px solid #cbd5e1; }
+      a { color: #000000 !important; text-decoration: none; }
     }
   </style>
 </head>
@@ -353,42 +462,42 @@
 
   <div class="container">
 
-    <!-- INTESTAZIONE / PROFILO -->
-    <div class="profile-header">
-      <!-- Pulsante Traduzione -->
+    <!-- PROFILO PRINCIPALE -->
+    <div class="profile-header animate-entry delay-1">
       <button id="lang-toggle" class="lang-btn" onclick="toggleLanguage()">
         🌐 <span id="lang-text">English</span>
       </button>
 
-      <!-- IMMAGINE DEL PROFILO -->
-      <img src="foto-profilo2.jpg" alt="Pasquale Zaccagnino" class="profile2-img">
+      <img src="foto-profilo2.jpg" alt="Pasquale Zaccagnino" class="profile-avatar">
 
       <h1>Pasquale Zaccagnino</h1>
       <div class="title" data-it="Perito Tecnico Informatico" data-en="Computer Technical Expert">Perito Tecnico Informatico</div>
 
-      <div class="contact-info">
-        <span><i class="fa-solid fa-location-dot"></i> Potenza, Italia</span> •
-        <a href="tel:+393513123775"><i class="fa-solid fa-phone"></i> 351 312 3775</a> •
-        <a href="mailto:pzaccagnino2@gmail.com"><i class="fa-solid fa-envelope"></i> pzaccagnino2@gmail.com</a>
+      <div class="contact-grid">
+        <div class="contact-item">
+          <i class="fa-solid fa-location-dot"></i>
+          <span>Potenza, Italia</span>
+        </div>
+        <div class="contact-item">
+          <i class="fa-solid fa-phone"></i>
+          <a href="tel:+393513123775">+39 351 312 3775</a>
+        </div>
+        <div class="contact-item">
+          <i class="fa-solid fa-envelope"></i>
+          <a href="mailto:pzaccagnino2@gmail.com">pzaccagnino2@gmail.com</a>
+        </div>
       </div>
 
       <div class="action-buttons">
-        <!-- Scarica CV PDF / Stampa -->
         <a href="javascript:window.print()" class="btn">
           <i class="fa-solid fa-file-pdf"></i> <span data-it="Scarica CV (PDF)" data-en="Download CV (PDF)">Scarica CV (PDF)</span>
         </a>
-
-        <!-- LinkedIn -->
         <a href="https://www.linkedin.com/in/pasquale-zaccagnino-7240973b2" target="_blank" rel="noopener noreferrer" class="btn btn-linkedin">
           <i class="fa-brands fa-linkedin"></i> LinkedIn
         </a>
-
-        <!-- WhatsApp -->
         <a href="https://wa.me/393513123775?text=Ciao%20Pasquale,%20ho%20visto%20il%20tuo%20CV!" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
           <i class="fa-brands fa-whatsapp"></i> WhatsApp
         </a>
-
-        <!-- Instagram -->
         <a href="https://www.instagram.com/the_pasix" target="_blank" rel="noopener noreferrer" class="btn btn-instagram">
           <i class="fa-brands fa-instagram"></i> Instagram
         </a>
@@ -396,10 +505,10 @@
     </div>
 
     <!-- PROFILO PROFESSIONALE -->
-    <div class="section">
+    <div class="section animate-entry delay-2">
       <div class="section-title" data-it="Profilo Professionale" data-en="Professional Profile">Profilo Professionale</div>
       <div class="card">
-        <p style="margin: 0; color: #cbd5e1; font-size: 0.95rem; line-height: 1.6;" 
+        <p class="card-text" 
            data-it="Neo-diplomato in Informatica presso l'I.I.S. Einstein - De Lorenzo, con solide basi in HTML, CSS, JavaScript, PHP, JSON, SQL e linguaggi C/Java. Abituato a lavorare sotto pressione e in team grazie all'esperienza maturata nella ristorazione, con forte orientamento all'organizzazione e al problem solving. Cerco un ruolo come Tecnico Informatico Junior per crescere nello sviluppo software e nell'assistenza tecnica."
            data-en="Junior IT graduate from I.I.S. Einstein - De Lorenzo, with solid skills in HTML, CSS, JavaScript, PHP, JSON, SQL, and C/Java languages. Used to working under pressure and in teams thanks to experience in the restaurant industry, with strong organization and problem-solving skills. Seeking a Junior IT Technician role to grow in software development and technical support.">
           Neo-diplomato in Informatica presso l'I.I.S. Einstein - De Lorenzo, con solide basi in HTML, CSS, JavaScript, PHP, JSON, SQL e linguaggi C/Java. Abituato a lavorare sotto pressione e in team grazie all'esperienza maturata nella ristorazione, con forte orientamento all'organizzazione e al problem solving. Cerco un ruolo come Tecnico Informatico Junior per crescere nello sviluppo software e nell'assistenza tecnica.
@@ -407,32 +516,16 @@
       </div>
     </div>
 
-    <!-- PORTFOLIO PROGETTI E MULTIMEDIA -->
-    <div class="section">
-      <div class="section-title" data-it="Progetti & Collegamenti Multimediali" data-en="Projects & Multimedia Links">Progetti & Collegamenti Multimediali</div>
-      
-      <div class="card">
-        <h3 data-it="Sistema Gestione Ordini & Comande" data-en="Order & Receipt Management System">Sistema Gestione Ordini & Comande</h3>
-        <div class="subtitle" data-it="Sviluppo Web • HTML / CSS / JavaScript / SQL" data-en="Web Development • HTML / CSS / JavaScript / SQL">Sviluppo Web • HTML / CSS / JavaScript / SQL</div>
-        <p style="margin: 0 0 10px; color: #cbd5e1; font-size: 0.9rem;"
-           data-it="Applicazione web pensata per la gestione degli ordini e delle comande in tempo reale, sviluppata sfruttando competenze sia di interfaccia che di strutturazione dati."
-           data-en="Web application designed for real-time order management, developed leveraging both front-end and database structuring skills.">
-          Applicazione web pensata per la gestione degli ordini e delle comande in tempo reale, sviluppata sfruttando competenze sia di interfaccia che di strutturazione dati.
-        </p>
-        <div class="links">
-          <a href="https://github.com/PasqualeZacc/minecraft-mod" target="_blank" data-it="💻 Codice Sorgente (GitHub)" data-en="💻 Source Code (GitHub)">💻 Codice Sorgente (GitHub)</a>
-          <a href="#" target="_blank" data-it="🌐 Anteprima Live" data-en="🌐 Live Preview">🌐 Anteprima Live</a>
-        </div>
-      </div>
-    </div>
-
     <!-- ESPERIENZA LAVORATIVA -->
-    <div class="section">
+    <div class="section animate-entry delay-3">
       <div class="section-title" data-it="Esperienza Professionale" data-en="Work Experience">Esperienza Professionale</div>
       <div class="card">
-        <h3 data-it="Cameriere — Fratelli La Bufala" data-en="Waiter — Fratelli La Bufala">Cameriere — Fratelli La Bufala</h3>
-        <div class="subtitle" data-it="Gennaio 2025 – Gennaio 2026 | Potenza" data-en="January 2025 – January 2026 | Potenza">Gennaio 2025 – Gennaio 2026 | Potenza</div>
-        <ul>
+        <div class="card-header">
+          <h3 class="card-title" data-it="Cameriere" data-en="Waiter">Cameriere</h3>
+          <span class="badge-date" data-it="Gen 2025 – Gen 2026" data-en="Jan 2025 – Jan 2026">Gen 2025 – Gen 2026</span>
+        </div>
+        <div class="card-subtitle"><i class="fa-solid fa-briefcase"></i> Fratelli La Bufala • Potenza, Italia</div>
+        <ul class="card-list">
           <li data-it="Gestione di circa 70 coperti per turno, garantendo precisione negli ordini e tempi di servizio rapidi." data-en="Managed around 70 guests per shift, ensuring order accuracy and fast service times.">Gestione di circa 70 coperti per turno, garantendo precisione negli ordini e tempi di servizio rapidi.</li>
           <li data-it="Mantenimento di un rapporto professionale e cordiale con i clienti, contribuendo a un ambiente accogliente." data-en="Maintained a professional and friendly relationship with customers, contributing to a welcoming environment.">Mantenimento di un rapporto professionale e cordiale con i clienti, contribuendo a un ambiente accogliente.</li>
           <li data-it="Lavoro efficace sotto pressione durante i periodi di massima affluenza, collaborando in sinergia con i team di sala e cucina." data-en="Worked effectively under pressure during peak hours, collaborating smoothly with kitchen and floor staff.">Lavoro efficace sotto pressione durante i periodi di massima affluenza, collaborando in sinergia con i team di sala e cucina.</li>
@@ -440,49 +533,76 @@
       </div>
     </div>
 
-    <!-- ISTRUZIONE -->
-    <div class="section">
-      <div class="section-title" data-it="Istruzione e Formazione" data-en="Education">Istruzione e Formazione</div>
+    <!-- PROGETTI E PORTFOLIO -->
+    <div class="section animate-entry delay-4">
+      <div class="section-title" data-it="Progetti" data-en="Projects">Progetti</div>
       <div class="card">
-        <h3 data-it="Diploma di Maturità in Informatica" data-en="High School Diploma in Computer Science">Diploma di Maturità in Informatica</h3>
-        <div class="subtitle" data-it="Settembre 2019 – Giugno 2025 | I.I.S. Einstein - De Lorenzo (Potenza)" data-en="September 2019 – June 2025 | I.I.S. Einstein - De Lorenzo (Potenza)">Settembre 2019 – Giugno 2025 | I.I.S. Einstein - De Lorenzo (Potenza)</div>
+        <div class="card-header">
+          <h3 class="card-title" data-it="Sistema Gestione Ordini & Comande" data-en="Order & Receipt Management System">Sistema Gestione Ordini & Comande</h3>
+        </div>
+        <div class="card-subtitle"><i class="fa-solid fa-code"></i> Sviluppo Web • HTML / CSS / JavaScript / SQL</div>
+        <p class="card-text"
+           data-it="Applicazione web pensata per la gestione degli ordini e delle comande in tempo reale, sviluppata sfruttando competenze sia di interfaccia che di strutturazione dati."
+           data-en="Web application designed for real-time order management, developed leveraging both front-end and database structuring skills.">
+          Applicazione web pensata per la gestione degli ordini e delle comande in tempo reale, sviluppata sfruttando competenze sia di interfaccia che di strutturazione dati.
+        </p>
+        <div class="card-links">
+          <a href="https://github.com/PasqualeZacc/minecraft-mod" target="_blank" data-it="💻 Codice Sorgente (GitHub)" data-en="💻 Source Code (GitHub)">💻 Codice Sorgente (GitHub)</a>
+          <a href="#" target="_blank" data-it="🌐 Anteprima Live" data-en="🌐 Live Preview">🌐 Anteprima Live</a>
+        </div>
       </div>
     </div>
 
-    <!-- COMPETENZE Tecniche & Soft Skills -->
-    <div class="section">
+    <!-- ISTRUZIONE E FORMAZIONE -->
+    <div class="section animate-entry delay-5">
+      <div class="section-title" data-it="Istruzione e Formazione" data-en="Education">Istruzione e Formazione</div>
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title" data-it="Diploma di Maturità in Informatica" data-en="High School Diploma in Computer Science">Diploma di Maturità in Informatica</h3>
+          <span class="badge-date">2019 – 2025</span>
+        </div>
+        <div class="card-subtitle"><i class="fa-solid fa-graduation-cap"></i> I.I.S. Einstein - De Lorenzo • Potenza, Italia</div>
+      </div>
+    </div>
+
+    <!-- COMPETENZE TECNICHE E SOFT SKILLS -->
+    <div class="section animate-entry delay-6">
       <div class="section-title" data-it="Competenze" data-en="Skills">Competenze</div>
       <div class="card">
-        <div style="font-weight: 600; margin-bottom: 10px; color: var(--accent);" data-it="Linguaggi e Tecnologie:" data-en="Languages & Technologies:">Linguaggi e Tecnologie:</div>
-        <div class="tags" style="margin-bottom: 18px;">
-          <span class="tag">HTML</span>
-          <span class="tag">CSS</span>
-          <span class="tag">JavaScript</span>
-          <span class="tag">JSON</span>
-          <span class="tag">SQL</span>
-          <span class="tag">PHP</span>
-          <span class="tag">Java</span>
-          <span class="tag">C#</span>
-          <span class="tag">C++</span>
-          <span class="tag">C</span>
+        <div class="skills-block">
+          <div class="skills-label" data-it="Linguaggi e Tecnologie" data-en="Languages & Technologies">Linguaggi e Tecnologie</div>
+          <div class="tags">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">JSON</span>
+            <span class="tag">SQL</span>
+            <span class="tag">PHP</span>
+            <span class="tag">Java</span>
+            <span class="tag">C#</span>
+            <span class="tag">C++</span>
+            <span class="tag">C</span>
+          </div>
         </div>
 
-        <div style="font-weight: 600; margin-bottom: 10px; color: var(--accent);" data-it="Competenze Personali e Gestionali:" data-en="Soft & Personal Skills:">Competenze Personali e Gestionali:</div>
-        <div class="tags">
-          <span class="tag" data-it="Problem Solving" data-en="Problem Solving">Problem Solving</span>
-          <span class="tag" data-it="Lavoro di Squadra" data-en="Teamwork">Lavoro di Squadra</span>
-          <span class="tag" data-it="Gestione Ordini" data-en="Order Management">Gestione Ordini</span>
-          <span class="tag" data-it="Servizio al Tavolo" data-en="Table Service">Servizio al Tavolo</span>
-          <span class="tag" data-it="Comunicazione Efficace" data-en="Effective Communication">Comunicazione Efficace</span>
-          <span class="tag" data-it="Gestione del Tempo" data-en="Time Management">Gestione del Tempo</span>
-          <span class="tag" data-it="Pensiero Critico" data-en="Critical Thinking">Pensiero Critico</span>
-          <span class="tag" data-it="Organizzazione" data-en="Organization">Organizzazione</span>
+        <div class="skills-block">
+          <div class="skills-label" data-it="Competenze Personali e Gestionali" data-en="Soft & Personal Skills">Competenze Personali e Gestionali</div>
+          <div class="tags">
+            <span class="tag" data-it="Problem Solving" data-en="Problem Solving">Problem Solving</span>
+            <span class="tag" data-it="Lavoro di Squadra" data-en="Teamwork">Lavoro di Squadra</span>
+            <span class="tag" data-it="Gestione Ordini" data-en="Order Management">Gestione Ordini</span>
+            <span class="tag" data-it="Servizio al Tavolo" data-en="Table Service">Servizio al Tavolo</span>
+            <span class="tag" data-it="Comunicazione Efficace" data-en="Effective Communication">Comunicazione Efficace</span>
+            <span class="tag" data-it="Gestione del Tempo" data-en="Time Management">Gestione del Tempo</span>
+            <span class="tag" data-it="Pensiero Critico" data-en="Critical Thinking">Pensiero Critico</span>
+            <span class="tag" data-it="Organizzazione" data-en="Organization">Organizzazione</span>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- MODULO DI CONTATTO -->
-    <div class="section">
+    <div class="section animate-entry delay-7">
       <div class="section-title" data-it="Invia un Messaggio Diretto" data-en="Send a Direct Message">Invia un Messaggio Diretto</div>
       <form action="https://formspree.io/f/TUO_FORM_ID" method="POST" class="card form-contact">
         <div class="form-group">
@@ -493,56 +613,56 @@
           <label for="message" data-it="Messaggio:" data-en="Message:">Messaggio:</label>
           <textarea id="message" name="message" rows="4" placeholder="Scrivi qui il tuo messaggio..." required></textarea>
         </div>
-        <button type="submit" class="btn" style="width: 100%; justify-content: center; border: none; cursor: pointer;">
+        <button type="submit" class="btn" style="width: 100%; justify-content: center; border: none; cursor: pointer; padding: 12px;">
           <i class="fa-solid fa-paper-plane"></i> <span data-it="Invia Messaggio" data-en="Send Message">Invia Messaggio</span>
         </button>
       </form>
     </div>
 
     <!-- LINGUE & INTERESSI -->
-    <div class="section">
+    <div class="section animate-entry delay-7">
       <div class="section-title" data-it="Lingue & Interessi" data-en="Languages & Interests">Lingue & Interessi</div>
       <div class="card">
-        <p style="margin: 0 0 10px; color: #cbd5e1;">
-          <strong>🇮🇹 <span data-it="Italiano:" data-en="Italian:">Italiano:</span></strong> <span data-it="Madrelingua" data-en="Native">Madrelingua</span> &nbsp;|&nbsp; 
-          <strong>🇬🇧 <span data-it="Inglese:" data-en="English:">Inglese:</span></strong> <span data-it="Livello Intermedio" data-en="Intermediate">Livello Intermedio</span>
-        </p>
-        <hr style="border: 0; border-top: 1px solid var(--tag-bg); margin: 12px 0;">
-        <p style="margin: 0; color: #cbd5e1; font-size: 0.9rem;">
-          <strong data-it="Tecnologia e Digitale:" data-en="Technology & Digital:">Tecnologia e Digitale:</strong> 
-          <span data-it="Forte interesse per il settore Tech, l'evoluzione hardware/software e la cultura del videogioco come punto d'incontro tra logica, creatività e tecnologia applicata."
-                data-en="Strong interest in the Tech sector, hardware/software evolution, and gaming culture as a point of intersection between logic, creativity, and applied technology.">
+        <div class="skills-block">
+          <div class="skills-label" data-it="Lingue" data-en="Languages">Lingue</div>
+          <p style="margin: 0; color: var(--text-main); font-size: 0.92rem;">
+            <strong>🇮🇹 <span data-it="Italiano:" data-en="Italian:">Italiano:</span></strong> <span data-it="Madrelingua" data-en="Native">Madrelingua</span> &nbsp;|&nbsp; 
+            <strong>🇬🇧 <span data-it="Inglese:" data-en="English:">Inglese:</span></strong> <span data-it="Livello Intermedio" data-en="Intermediate">Livello Intermedio</span>
+          </p>
+        </div>
+
+        <div class="skills-block">
+          <div class="skills-label" data-it="Interessi" data-en="Interests">Interessi</div>
+          <p style="margin: 0; color: var(--text-main); font-size: 0.92rem;"
+             data-it="Forte interesse per il settore Tech, l'evoluzione hardware/software e la cultura del videogioco come punto d'incontro tra logica, creatività e tecnologia applicata."
+             data-en="Strong interest in the Tech sector, hardware/software evolution, and gaming culture as a point of intersection between logic, creativity, and applied technology.">
             Forte interesse per il settore Tech, l'evoluzione hardware/software e la cultura del videogioco come punto d'incontro tra logica, creatività e tecnologia applicata.
-          </span>
-        </p>
+          </p>
+        </div>
       </div>
     </div>
 
-    <div class="footer-note" data-it="Autorizzo il trattamento dei miei dati personali ai sensi del GDPR (Regolamento UE 2016/679)." data-en="I authorize the processing of personal data in accordance with GDPR (EU Regulation 2016/679).">
+    <div class="footer-note animate-entry delay-7" data-it="Autorizzo il trattamento dei miei dati personali ai sensi del GDPR (Regolamento UE 2016/679)." data-en="I authorize the processing of personal data in accordance with GDPR (EU Regulation 2016/679).">
       Autorizzo il trattamento dei miei dati personali ai sensi del GDPR (Regolamento UE 2016/679).
     </div>
 
   </div>
 
-  <!-- PULSANTE FLUTTUANTE TORNA SU -->
   <button id="back-to-top" onclick="scrollToTop()" title="Torna in alto">
     <i class="fa-solid fa-arrow-up"></i>
   </button>
 
-  <!-- SCRIPT JS -->
   <script>
     let currentLang = 'it';
 
     function toggleLanguage() {
       currentLang = currentLang === 'it' ? 'en' : 'it';
       
-      // Aggiorna testo del pulsante lingua
       const langText = document.getElementById('lang-text');
       if (langText) {
         langText.innerText = currentLang === 'it' ? 'English' : 'Italiano';
       }
 
-      // Aggiorna tutti gli elementi con data-it e data-en
       const elements = document.querySelectorAll('[data-it][data-en]');
       elements.forEach(el => {
         const targetText = el.getAttribute(`data-${currentLang}`);
@@ -552,7 +672,6 @@
       });
     }
 
-    // Gestione visualizzazione e scroll del pulsante "Torna Su"
     const backToTopBtn = document.getElementById('back-to-top');
 
     window.addEventListener('scroll', () => {
