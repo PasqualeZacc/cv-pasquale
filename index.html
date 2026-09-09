@@ -668,9 +668,9 @@
       <div class="section-title" data-it="Competenze" data-en="Skills">Competenze</div>
       
       <div class="skills-filter">
-        <button class="filter-btn active" onclick="filterSkills('all')" data-it="Tutte" data-en="All">Tutte</button>
-        <button class="filter-btn" onclick="filterSkills('tech')" data-it="Tecniche" data-en="Technical">Tecniche</button>
-        <button class="filter-btn" onclick="filterSkills('soft')" data-it="Soft Skills" data-en="Soft Skills">Soft Skills</button>
+        <button class="filter-btn active" onclick="filterSkills('all', this)" data-it="Tutte" data-en="All">Tutte</button>
+        <button class="filter-btn" onclick="filterSkills('tech', this)" data-it="Tecniche" data-en="Technical">Tecniche</button>
+        <button class="filter-btn" onclick="filterSkills('soft', this)" data-it="Soft Skills" data-en="Soft Skills">Soft Skills</button>
       </div>
 
       <div class="card">
@@ -763,34 +763,25 @@
     let currentLang = 'it';
     let typingTimeout;
 
-    // 1. EFFETTO SCRITTURA AUTOMATICA (Typing Effect)
-    function typeEffect(element, text, speed = 50) {
-      let index = 0;
-      element.innerHTML = '';
+    // 1. EFFETTO SCRITTURA AUTOMATICA & GESTIONE TITOLO
+    function updateTitleText() {
+      const titleEl = document.getElementById('typed-title');
+      if (!titleEl) return;
+      
       clearTimeout(typingTimeout);
+      const text = titleEl.getAttribute(`data-${currentLang}`) || '';
+      let index = 0;
+      titleEl.innerHTML = '';
 
       function type() {
         if (index < text.length) {
-          element.innerHTML += text.charAt(index);
+          titleEl.innerHTML += text.charAt(index);
           index++;
-          typingTimeout = setTimeout(type, speed);
+          typingTimeout = setTimeout(type, 60);
         }
       }
       type();
     }
-
-    function updateTitleText() {
-      const titleEl = document.getElementById('typed-title');
-      if (titleEl) {
-        const textToType = titleEl.getAttribute(`data-${currentLang}`);
-        typeEffect(titleEl, textToType, 60);
-      }
-    }
-
-    // Initialize typing title on load
-    document.addEventListener('DOMContentLoaded', () => {
-      updateTitleText();
-    });
 
     // 2. CAMBIO LINGUA
     function toggleLanguage() {
@@ -801,58 +792,48 @@
         langText.innerText = currentLang === 'it' ? 'English' : 'Italiano';
       }
 
-      const elements = document.querySelectorAll('[data-it][data-en]');
-      elements.forEach(el => {
+      document.querySelectorAll('[data-it][data-en]').forEach(el => {
         if (el.id !== 'typed-title') {
           const targetText = el.getAttribute(`data-${currentLang}`);
-          if (targetText) {
-            el.innerText = targetText;
-          }
+          if (targetText) el.innerText = targetText;
         }
       });
 
       updateTitleText();
     }
 
-    // 3. BARRA DI PROGRESSO DELLO SCORRIMENTO E BOTTONE BACK TO TOP
+    // Initialize layout on page load
+    document.addEventListener('DOMContentLoaded', updateTitleText);
+
+    // 3. SCROLL & BACK TO TOP
     const backToTopBtn = document.getElementById('back-to-top');
     const progressBar = document.getElementById('progress-bar');
 
     window.addEventListener('scroll', () => {
       const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
       const currentScroll = window.scrollY;
-      const scrolledPercentage = (currentScroll / totalScroll) * 100;
       
-      if (progressBar) {
-        progressBar.style.width = scrolledPercentage + '%';
+      if (progressBar && totalScroll > 0) {
+        progressBar.style.width = (currentScroll / totalScroll * 100) + '%';
       }
 
-      if (currentScroll > 300) {
-        backToTopBtn.classList.add('show');
-      } else {
-        backToTopBtn.classList.remove('show');
+      if (backToTopBtn) {
+        backToTopBtn.classList.toggle('show', currentScroll > 300);
       }
     });
 
     function scrollToTop() {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     // 4. EFFETTO TILT 3D SULLE CARD
     document.querySelectorAll('.card').forEach(card => {
       card.addEventListener('mousemove', (e) => {
         const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
-        
-        const rotateX = ((y - centerY) / centerY) * -4;
-        const rotateY = ((x - centerX) / centerX) * 4;
+        const rotateX = ((e.clientY - rect.top - centerY) / centerY) * -4;
+        const rotateY = ((e.clientX - rect.left - centerX) / centerX) * 4;
         
         card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
       });
@@ -863,17 +844,13 @@
     });
 
     // 5. FILTRO COMPETENZE
-    function filterSkills(category) {
+    function filterSkills(category, btnElement) {
       document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
+      if (btnElement) btnElement.classList.add('active');
 
-      const blocks = document.querySelectorAll('.skills-block[data-category]');
-      blocks.forEach(block => {
-        if (category === 'all' || block.getAttribute('data-category') === category) {
-          block.classList.remove('hidden');
-        } else {
-          block.classList.add('hidden');
-        }
+      document.querySelectorAll('.skills-block[data-category]').forEach(block => {
+        const matches = category === 'all' || block.getAttribute('data-category') === category;
+        block.classList.toggle('hidden', !matches);
       });
     }
 
@@ -881,11 +858,11 @@
     function copyToClipboard(text, message) {
       navigator.clipboard.writeText(text).then(() => {
         const toast = document.getElementById('toast');
-        toast.innerText = message;
-        toast.classList.add('show');
-        setTimeout(() => {
-          toast.classList.remove('show');
-        }, 2000);
+        if (toast) {
+          toast.innerText = message;
+          toast.classList.add('show');
+          setTimeout(() => toast.classList.remove('show'), 2000);
+        }
       });
     }
   </script>
