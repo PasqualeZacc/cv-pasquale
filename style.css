@@ -137,6 +137,11 @@ h1, h2, h3, h4, .logo, .badge, .btn {
   transform: scale(1.05);
 }
 
+.nav-links {
+  display: flex;
+  align-items: center;
+}
+
 .nav-links a {
   color: var(--text-muted);
   text-decoration: none;
@@ -165,6 +170,43 @@ h1, h2, h3, h4, .logo, .badge, .btn {
 
 .nav-links a:hover, .nav-links a.active {
   color: var(--text-main);
+}
+
+/* Selettore Lingua Liquid Glass */
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border-radius: 20px;
+  padding: 3px;
+  box-shadow: var(--glass-glow-inner);
+  margin-left: 1rem;
+}
+
+.lang-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 0.3rem 0.65rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: var(--font-heading);
+}
+
+.lang-btn:hover {
+  color: var(--text-main);
+}
+
+.lang-btn.active {
+  background: var(--primary-color);
+  color: #000;
+  box-shadow: 0 2px 10px rgba(56, 239, 125, 0.3);
 }
 
 /* Hero Section */
