@@ -43,6 +43,27 @@
       background: linear-gradient(135deg, #38ef7d, #11998e) border-box;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      max-width: 500px;
+      width: 90%;
+    }
     @media (max-width: 768px) {
       .hero-wrapper {
         flex-direction: column-reverse;
@@ -68,17 +89,23 @@
       </a>
       
       <nav class="nav-links" aria-label="Navigazione Principale">
-        <a href="#hero" class="active">Chi Sono</a>
-        <a href="#skills">Competenze</a>
-        <a href="#projects">Progetti</a>
-        <a href="#experience">Esperienza</a>
-        <a href="#education">Formazione</a>
-        <a href="#contact">Contatti</a>
+        <a href="#hero" class="active" data-i18n="nav-about">Chi Sono</a>
+        <a href="#skills" data-i18n="nav-skills">Competenze</a>
+        <a href="#projects" data-i18n="nav-projects">Progetti</a>
+        <a href="#experience" data-i18n="nav-experience">Esperienza</a>
+        <a href="#education" data-i18n="nav-education">Formazione</a>
+        <a href="#contact" data-i18n="nav-contact">Contatti</a>
       </nav>
 
       <div class="nav-actions">
+        <!-- Selettore Lingua Liquid Glass -->
+        <div class="lang-switch" role="group" aria-label="Selezione lingua">
+          <button type="button" class="lang-btn active" id="btn-it" onclick="switchLanguage('it')" aria-label="Lingua Italiana">IT</button>
+          <button type="button" class="lang-btn" id="btn-en" onclick="switchLanguage('en')" aria-label="English Language">EN</button>
+        </div>
+
         <a href="CV_Pasquale_Zaccagnino.pdf" download class="btn btn-download" aria-label="Scarica il Curriculum Vitae in PDF">
-          <i class="fas fa-download" aria-hidden="true"></i> <span>Scarica CV</span>
+          <i class="fas fa-download" aria-hidden="true"></i> <span data-i18n="btn-cv">Scarica CV</span>
         </a>
       </div>
     </div>
@@ -89,20 +116,20 @@
     <section id="hero" class="hero-section">
       <div class="container hero-wrapper">
         <div class="hero-content">
-          <span class="badge"><i class="fas fa-laptop-code" aria-hidden="true"></i> Perito Tecnico Informatico</span>
+          <span class="badge"><i class="fas fa-laptop-code" aria-hidden="true"></i> <span data-i18n="hero-badge">Perito Tecnico Informatico</span></span>
           <h1 class="hero-title">Pasquale Zaccagnino</h1>
           <p class="hero-subtitle">
-            Tecnico Informatico Junior & <span class="gradient-text">Sviluppatore Web</span>
+            <span data-i18n="hero-role-1">Tecnico Informatico Junior</span> & <span class="gradient-text" data-i18n="hero-role-2">Sviluppatore Web</span>
           </p>
-          <p class="hero-bio">
+          <p class="hero-bio" data-i18n="hero-bio">
             Neo diplomato in Informatica presso l'I.I.S. Einstein - De Lorenzo. Solide basi in HTML, CSS, JavaScript, PHP, SQL, C, Java, C# e sviluppo Android. Abituato a lavorare sotto pressione e in team con forte orientamento all'organizzazione, gestione del tempo e problem solving.
           </p>
           <div class="hero-btns">
-            <a href="#projects" class="btn btn-primary"><i class="fas fa-code" aria-hidden="true"></i> Vedi Progetti</a>
+            <a href="#projects" class="btn btn-primary"><i class="fas fa-code" aria-hidden="true"></i> <span data-i18n="btn-projects">Vedi Progetti</span></a>
             <a href="https://wa.me/3513123775?text=Ciao%20Pasquale,%20ho%20visto%20il%20tuo%20portfolio!" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
               <i class="fab fa-whatsapp" aria-hidden="true"></i> WhatsApp
             </a>
-            <a href="#contact" class="btn btn-secondary"><i class="fas fa-envelope" aria-hidden="true"></i> Contattami</a>
+            <a href="#contact" class="btn btn-secondary"><i class="fas fa-envelope" aria-hidden="true"></i> <span data-i18n="btn-contact">Contattami</span></a>
           </div>
         </div>
 
@@ -116,8 +143,8 @@
     <section id="skills" class="section">
       <div class="container">
         <div class="section-header">
-          <h2 class="section-title">Competenze <span class="gradient-text">Tecniche & Soft Skills</span></h2>
-          <p class="section-sub">Linguaggi, strumenti e attitudini professionali</p>
+          <h2 class="section-title"><span data-i18n="skills-title">Competenze</span> <span class="gradient-text" data-i18n="skills-title-grad">Tecniche & Soft Skills</span></h2>
+          <p class="section-sub" data-i18n="skills-sub">Linguaggi, strumenti e attitudini professionali</p>
         </div>
 
         <div class="skills-grid">
@@ -126,7 +153,7 @@
               <i class="fab fa-html5 skill-icon" aria-hidden="true"></i>
               <h3>HTML5 & CSS3</h3>
             </div>
-            <p>Sviluppo di interfacce web responsive, moderne, accessibili e ben strutturate.</p>
+            <p data-i18n="skill-html-desc">Sviluppo di interfacce web responsive, moderne, accessibili e ben strutturate.</p>
           </article>
 
           <article class="skill-card">
@@ -134,7 +161,7 @@
               <i class="fab fa-js skill-icon" aria-hidden="true"></i>
               <h3>JavaScript & JSON</h3>
             </div>
-            <p>Creazione di logiche dinamiche lato client e gestione dello scambio dati strutturato.</p>
+            <p data-i18n="skill-js-desc">Creazione di logiche dinamiche lato client e gestione dello scambio dati strutturato.</p>
           </article>
 
           <article class="skill-card">
@@ -142,7 +169,7 @@
               <i class="fas fa-database skill-icon" aria-hidden="true"></i>
               <h3>SQL & PHP</h3>
             </div>
-            <p>Progettazione e gestione di database relazionali e programmazione web backend.</p>
+            <p data-i18n="skill-db-desc">Progettazione e gestione di database relazionali e programmazione web backend.</p>
           </article>
 
           <article class="skill-card">
@@ -150,19 +177,19 @@
               <i class="fab fa-android skill-icon" aria-hidden="true"></i>
               <h3>Android & Java / C# / C</h3>
             </div>
-            <p>Sviluppo mobile Android, programmazione ad oggetti (OOP) e algoritmi strutturati.</p>
+            <p data-i18n="skill-android-desc">Sviluppo mobile Android, programmazione ad oggetti (OOP) e algoritmi strutturati.</p>
           </article>
         </div>
 
         <div class="soft-skills-box">
-          <h3><i class="fas fa-user-check" aria-hidden="true"></i> Attitudini & Punti di Forza</h3>
+          <h3><i class="fas fa-user-check" aria-hidden="true"></i> <span data-i18n="soft-title">Attitudini & Punti di Forza</span></h3>
           <div class="tags-container">
             <span class="tag"><i class="fas fa-check" aria-hidden="true"></i> Problem Solving</span>
-            <span class="tag"><i class="fas fa-check" aria-hidden="true"></i> Lavoro di Squadra</span>
-            <span class="tag"><i class="fas fa-check" aria-hidden="true"></i> Gestione del Tempo</span>
-            <span class="tag"><i class="fas fa-check" aria-hidden="true"></i> Comunicazione Efficace</span>
-            <span class="tag"><i class="fas fa-check" aria-hidden="true"></i> Pensiero Critico</span>
-            <span class="tag"><i class="fas fa-check" aria-hidden="true"></i> Capacità Organizzative</span>
+            <span class="tag"><i class="fas fa-check" aria-hidden="true"></i> <span data-i18n="tag-teamwork">Lavoro di Squadra</span></span>
+            <span class="tag"><i class="fas fa-check" aria-hidden="true"></i> <span data-i18n="tag-time">Gestione del Tempo</span></span>
+            <span class="tag"><i class="fas fa-check" aria-hidden="true"></i> <span data-i18n="tag-comm">Comunicazione Efficace</span></span>
+            <span class="tag"><i class="fas fa-check" aria-hidden="true"></i> <span data-i18n="tag-critical">Pensiero Critico</span></span>
+            <span class="tag"><i class="fas fa-check" aria-hidden="true"></i> <span data-i18n="tag-org">Capacità Organizzative</span></span>
           </div>
         </div>
       </div>
@@ -172,17 +199,17 @@
     <section id="projects" class="section alt-bg">
       <div class="container">
         <div class="section-header">
-          <h2 class="section-title">Progetti <span class="gradient-text">In Evidenza</span></h2>
-          <p class="section-sub">Applicazioni e software sviluppati</p>
+          <h2 class="section-title"><span data-i18n="proj-title">Progetti</span> <span class="gradient-text" data-i18n="proj-title-grad">In Evidenza</span></h2>
+          <p class="section-sub" data-i18n="proj-sub">Applicazioni e software sviluppati</p>
         </div>
 
         <div class="projects-grid">
           <article class="project-card card">
             <div class="project-header">
               <i class="fas fa-pizza-slice skill-icon" aria-hidden="true"></i>
-              <h3>Sistema Gestione Comande Pizzeria</h3>
+              <h3 data-i18n="p1-title">Sistema Gestione Comande Pizzeria</h3>
             </div>
-            <p class="project-desc">
+            <p class="project-desc" data-i18n="p1-desc">
               Web app dinamica per la gestione degli ordini ai tavoli con filtro prodotti, note personalizzate, calcolo automatico del coperto e conformità alle normative GDPR sul trattamento dati.
             </p>
             <div class="tags-container">
@@ -197,9 +224,9 @@
           <article class="project-card card">
             <div class="project-header">
               <i class="fas fa-home skill-icon" aria-hidden="true"></i>
-              <h3>Casa Domotica (Smart Home)</h3>
+              <h3 data-i18n="p2-title">Casa Domotica (Smart Home)</h3>
             </div>
-            <p class="project-desc">
+            <p class="project-desc" data-i18n="p2-desc">
               Realizzazione in team di un plastico interattivo di un'abitazione domotica dotata di sensori per il controllo automatico di illuminazione, gestione temperatura e sicurezza remota.
             </p>
             <div class="tags-container">
@@ -213,9 +240,9 @@
           <article class="project-card card">
             <div class="project-header">
               <i class="fas fa-gamepad skill-icon" aria-hidden="true"></i>
-              <h3>Videogioco Unity 2D</h3>
+              <h3 data-i18n="p3-title">Videogioco Unity 2D</h3>
             </div>
-            <p class="project-desc">
+            <p class="project-desc" data-i18n="p3-desc">
               Sviluppo in collaborazione di un videogioco 2D personalizzato realizzato tramite il motore grafico Unity, curando dinamiche di gioco, fisica e gestione ostacoli.
             </p>
             <div class="tags-container">
@@ -232,23 +259,23 @@
     <section id="experience" class="section">
       <div class="container">
         <div class="section-header">
-          <h2 class="section-title">Esperienza <span class="gradient-text">Professionale</span></h2>
-          <p class="section-sub">Attività lavorative e competenze pratiche sul campo</p>
+          <h2 class="section-title"><span data-i18n="exp-title">Esperienza</span> <span class="gradient-text" data-i18n="exp-title-grad">Professionale</span></h2>
+          <p class="section-sub" data-i18n="exp-sub">Attività lavorative e competenze pratiche sul campo</p>
         </div>
 
         <div class="timeline">
           <article class="timeline-item card">
             <div class="card-header-flex">
               <div>
-                <h3 class="timeline-title">Cameriere di Sala</h3>
+                <h3 class="timeline-title" data-i18n="exp-role">Cameriere di Sala</h3>
                 <h4 class="timeline-company"><i class="fas fa-utensils" aria-hidden="true"></i> Fratelli La Bufala | Potenza</h4>
               </div>
               <span class="timeline-date"><i class="fas fa-calendar-alt" aria-hidden="true"></i> 01/2025 - 01/2026</span>
             </div>
             <ul class="experience-list">
-              <li><i class="fas fa-arrow-right" aria-hidden="true"></i> Gestione di circa 70 coperti per turno, garantendo precisione negli ordini e tempi rapidi.</li>
-              <li><i class="fas fa-arrow-right" aria-hidden="true"></i> Mantenimento di un rapporto professionale e cordiale con il pubblico.</li>
-              <li><i class="fas fa-arrow-right" aria-hidden="true"></i> Lavoro efficace sotto pressione durante picchi di affluenza, coordinandosi con sala e cucina.</li>
+              <li><i class="fas fa-arrow-right" aria-hidden="true"></i> <span data-i18n="exp-l1">Gestione di circa 70 coperti per turno, garantendo precisione negli ordini e tempi rapidi.</span></li>
+              <li><i class="fas fa-arrow-right" aria-hidden="true"></i> <span data-i18n="exp-l2">Mantenimento di un rapporto professionale e cordiale con il pubblico.</span></li>
+              <li><i class="fas fa-arrow-right" aria-hidden="true"></i> <span data-i18n="exp-l3">Lavoro efficace sotto pressione durante picchi di affluenza, coordinandosi con sala e cucina.</span></li>
             </ul>
           </article>
         </div>
@@ -259,18 +286,18 @@
     <section id="education" class="section alt-bg">
       <div class="container">
         <div class="section-header">
-          <h2 class="section-title">Istruzione & <span class="gradient-text">Formazione</span></h2>
+          <h2 class="section-title"><span data-i18n="edu-title">Istruzione &</span> <span class="gradient-text" data-i18n="edu-title-grad">Formazione</span></h2>
         </div>
 
         <article class="education-card card">
           <div class="card-header-flex">
             <div>
-              <h3 class="timeline-title">Diploma Di Maturità Tecnico Informatico</h3>
+              <h3 class="timeline-title" data-i18n="edu-degree">Diploma Di Maturità Tecnico Informatico</h3>
               <h4 class="timeline-company"><i class="fas fa-graduation-cap" aria-hidden="true"></i> I.I.S. Einstein - De Lorenzo | Potenza</h4>
             </div>
             <span class="timeline-date"><i class="fas fa-calendar-alt" aria-hidden="true"></i> 09/2019 - 06/2025</span>
           </div>
-          <p class="edu-desc">Percorso di studi focalizzato su programmazione software, architettura delle reti, database relazionali e sistemi operativi.</p>
+          <p class="edu-desc" data-i18n="edu-desc">Percorso di studi focalizzato su programmazione software, architettura delle reti, database relazionali e sistemi operativi.</p>
         </article>
       </div>
     </section>
@@ -279,17 +306,17 @@
     <section id="contact" class="section">
       <div class="container">
         <div class="section-header">
-          <h2 class="section-title">Mettiti in <span class="gradient-text">Contatto</span></h2>
-          <p class="section-sub">Disponibile per opportunità lavorative e collaborazioni</p>
+          <h2 class="section-title"><span data-i18n="contact-title">Mettiti in</span> <span class="gradient-text" data-i18n="contact-title-grad">Contatto</span></h2>
+          <p class="section-sub" data-i18n="contact-sub">Disponibile per opportunità lavorative e collaborazioni</p>
         </div>
 
         <div class="soft-skills-box" style="text-align: center; max-width: 600px; margin: 0 auto;">
-          <p style="margin-bottom: 1.5rem; color: var(--text-muted);">
+          <p style="margin-bottom: 1.5rem; color: var(--text-muted);" data-i18n="contact-box-desc">
             Puoi inviarmi una mail o scrivermi direttamente su WhatsApp per risposte rapide.
           </p>
           <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
             <a href="mailto:pzaccagnino2@gmail.com" class="btn btn-primary">
-              <i class="fas fa-paper-plane" aria-hidden="true"></i> Invia una Mail
+              <i class="fas fa-paper-plane" aria-hidden="true"></i> <span data-i18n="btn-email">Invia una Mail</span>
             </a>
             <button type="button" class="btn btn-secondary" onclick="openPrivacyModal()">
               <i class="fas fa-shield-alt" aria-hidden="true"></i> Info Privacy GDPR
@@ -303,18 +330,18 @@
   <!-- Footer -->
   <footer style="padding: 2rem 0; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-muted); font-size: 0.85rem;">
     <div class="container">
-      <p>&copy; 2026 Pasquale Zaccagnino. Tutti i diritti riservati.</p>
+      <p>&copy; 2026 Pasquale Zaccagnino. <span data-i18n="footer-rights">Tutti i diritti riservati.</span></p>
     </div>
   </footer>
 
   <!-- Modale GDPR -->
   <div id="privacyModal" class="modal-backdrop" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal-content card">
-      <h3 id="modalTitle">Informativa sulla Privacy (GDPR)</h3>
-      <p style="color: var(--text-muted); margin: 1rem 0;">
+      <h3 id="modalTitle" data-i18n="modal-title">Informativa sulla Privacy (GDPR)</h3>
+      <p style="color: var(--text-muted); margin: 1rem 0;" data-i18n="modal-desc">
         I dati eventualmente trattati tramite le applicazioni dimostrative presenti nel sito vengono utilizzati esclusivamente per scopi tecnici in conformità con il Regolamento UE 2016/679.
       </p>
-      <button type="button" onclick="closePrivacyModal()" class="btn btn-primary">Chiudi</button>
+      <button type="button" onclick="closePrivacyModal()" class="btn btn-primary" data-i18n="modal-close">Chiudi</button>
     </div>
   </div>
 
@@ -342,6 +369,142 @@
     }
     function closePrivacyModal() {
       document.getElementById('privacyModal').style.display = 'none';
+    }
+
+    // Dizionario di Traduzione per il cambio lingua IT / EN
+    const translations = {
+      it: {
+        "nav-about": "Chi Sono",
+        "nav-skills": "Competenze",
+        "nav-projects": "Progetti",
+        "nav-experience": "Esperienza",
+        "nav-education": "Formazione",
+        "nav-contact": "Contatti",
+        "btn-cv": "Scarica CV",
+        "hero-badge": "Perito Tecnico Informatico",
+        "hero-role-1": "Tecnico Informatico Junior",
+        "hero-role-2": "Sviluppatore Web",
+        "hero-bio": "Neo diplomato in Informatica presso l'I.I.S. Einstein - De Lorenzo. Solide basi in HTML, CSS, JavaScript, PHP, SQL, C, Java, C# e sviluppo Android. Abituato a lavorare sotto pressione e in team con forte orientamento all'organizzazione, gestione del tempo e problem solving.",
+        "btn-projects": "Vedi Progetti",
+        "btn-contact": "Contattami",
+        "skills-title": "Competenze",
+        "skills-title-grad": "Tecniche & Soft Skills",
+        "skills-sub": "Linguaggi, strumenti e attitudini professionali",
+        "skill-html-desc": "Sviluppo di interfacce web responsive, moderne, accessibili e ben strutturate.",
+        "skill-js-desc": "Creazione di logiche dinamiche lato client e gestione dello scambio dati strutturato.",
+        "skill-db-desc": "Progettazione e gestione di database relazionali e programmazione web backend.",
+        "skill-android-desc": "Sviluppo mobile Android, programmazione ad oggetti (OOP) e algoritmi strutturati.",
+        "soft-title": "Attitudini & Punti di Forza",
+        "tag-teamwork": "Lavoro di Squadra",
+        "tag-time": "Gestione del Tempo",
+        "tag-comm": "Comunicazione Efficace",
+        "tag-critical": "Pensiero Critico",
+        "tag-org": "Capacità Organizzative",
+        "proj-title": "Progetti",
+        "proj-title-grad": "In Evidenza",
+        "proj-sub": "Applicazioni e software sviluppati",
+        "p1-title": "Sistema Gestione Comande Pizzeria",
+        "p1-desc": "Web app dinamica per la gestione degli ordini ai tavoli con filtro prodotti, note personalizzate, calcolo automatico del coperto e conformità alle normative GDPR sul trattamento dati.",
+        "p2-title": "Casa Domotica (Smart Home)",
+        "p2-desc": "Realizzazione in team di un plastico interattivo di un'abitazione domotica dotata di sensori per il controllo automatico di illuminazione, gestione temperatura e sicurezza remota.",
+        "p3-title": "Videogioco Unity 2D",
+        "p3-desc": "Sviluppo in collaborazione di un videogioco 2D personalizzato realizzato tramite il motore grafico Unity, curando dinamiche di gioco, fisica e gestione ostacoli.",
+        "exp-title": "Esperienza",
+        "exp-title-grad": "Professionale",
+        "exp-sub": "Attività lavorative e competenze pratiche sul campo",
+        "exp-role": "Cameriere di Sala",
+        "exp-l1": "Gestione di circa 70 coperti per turno, garantendo precisione negli ordini e tempi rapidi.",
+        "exp-l2": "Mantenimento di un rapporto professionale e cordiale con il pubblico.",
+        "exp-l3": "Lavoro efficace sotto pressione durante picchi di affluenza, coordinandosi con sala e cucina.",
+        "edu-title": "Istruzione &",
+        "edu-title-grad": "Formazione",
+        "edu-degree": "Diploma Di Maturità Tecnico Informatico",
+        "edu-desc": "Percorso di studi focalizzato su programmazione software, architettura delle reti, database relazionali e sistemi operativi.",
+        "contact-title": "Mettiti in",
+        "contact-title-grad": "Contatto",
+        "contact-sub": "Disponibile per opportunità lavorative e collaborazioni",
+        "contact-box-desc": "Puoi inviarmi una mail o scrivermi direttamente su WhatsApp per risposte rapide.",
+        "btn-email": "Invia una Mail",
+        "footer-rights": "Tutti i diritti riservati.",
+        "modal-title": "Informativa sulla Privacy (GDPR)",
+        "modal-desc": "I dati eventualmente trattati tramite le applicazioni dimostrative presenti nel sito vengono utilizzati esclusivamente per scopi tecnici in conformità con il Regolamento UE 2016/679.",
+        "modal-close": "Chiudi"
+      },
+      en: {
+        "nav-about": "About Me",
+        "nav-skills": "Skills",
+        "nav-projects": "Projects",
+        "nav-experience": "Experience",
+        "nav-education": "Education",
+        "nav-contact": "Contact",
+        "btn-cv": "Download CV",
+        "hero-badge": "Computer Science Technician",
+        "hero-role-1": "Junior IT Specialist",
+        "hero-role-2": "Web Developer",
+        "hero-bio": "Recent Computer Science graduate from I.I.S. Einstein - De Lorenzo. Solid foundations in HTML, CSS, JavaScript, PHP, SQL, C, Java, C#, and Android development. Skilled in working under pressure and in team environments with strong organizational, time management, and problem-solving skills.",
+        "btn-projects": "View Projects",
+        "btn-contact": "Contact Me",
+        "skills-title": "Technical",
+        "skills-title-grad": "Skills & Soft Skills",
+        "skills-sub": "Languages, tools, and professional attributes",
+        "skill-html-desc": "Development of responsive, modern, accessible, and well-structured web interfaces.",
+        "skill-js-desc": "Building dynamic client-side logic and managing structured data exchanges.",
+        "skill-db-desc": "Design and management of relational databases and backend web programming.",
+        "skill-android-desc": "Android mobile development, Object-Oriented Programming (OOP), and structured algorithms.",
+        "soft-title": "Attributes & Strengths",
+        "tag-teamwork": "Teamwork",
+        "tag-time": "Time Management",
+        "tag-comm": "Effective Communication",
+        "tag-critical": "Critical Thinking",
+        "tag-org": "Organizational Skills",
+        "proj-title": "Featured",
+        "proj-title-grad": "Projects",
+        "proj-sub": "Applications and software developed",
+        "p1-title": "Pizzeria Order Management System",
+        "p1-desc": "Dynamic web app for table order management featuring product filtering, custom notes, automatic cover charge calculation, and GDPR compliance.",
+        "p2-title": "Smart Home Automation",
+        "p2-desc": "Team project involving an interactive scale model of a smart home equipped with sensors for automatic lighting, temperature control, and remote security.",
+        "p3-title": "Unity 2D Video Game",
+        "p3-desc": "Collaborative development of a custom 2D video game built using the Unity engine, focusing on gameplay mechanics, physics, and obstacle management.",
+        "exp-title": "Professional",
+        "exp-title-grad": "Experience",
+        "exp-sub": "Work activities and hands-on skills in the field",
+        "exp-role": "Server / Waiter",
+        "exp-l1": "Managed approximately 70 covers per shift, ensuring order accuracy and fast service.",
+        "exp-l2": "Maintained a professional and friendly relationship with customers.",
+        "exp-l3": "Worked effectively under high-pressure rush hours while coordinating with front and back of house.",
+        "edu-title": "Education &",
+        "edu-title-grad": "Training",
+        "edu-degree": "High School Diploma in Computer Science",
+        "edu-desc": "Curriculum focused on software programming, network architecture, relational databases, and operating systems.",
+        "contact-title": "Get in",
+        "contact-title-grad": "Touch",
+        "contact-sub": "Available for job opportunities and collaborations",
+        "contact-box-desc": "Feel free to send me an email or write directly on WhatsApp for quick responses.",
+        "btn-email": "Send an Email",
+        "footer-rights": "All rights reserved.",
+        "modal-title": "Privacy Policy (GDPR)",
+        "modal-desc": "Any data processed through demonstration applications on this site is used exclusively for technical purposes in compliance with EU Regulation 2016/679.",
+        "modal-close": "Close"
+      }
+    };
+
+    // Funzione per il cambio dinamico della lingua
+    function switchLanguage(lang) {
+      document.documentElement.lang = lang;
+      
+      // Aggiorna classe attiva sui pulsanti
+      document.getElementById('btn-it').classList.toggle('active', lang === 'it');
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+
+      // Traduce gli elementi contrassegnati da data-i18n
+      const elements = document.querySelectorAll('[data-i18n]');
+      elements.forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
     }
   </script>
 </body>
