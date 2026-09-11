@@ -1,6 +1,6 @@
 /**
  * @file app.js
- * @description Gestore Comande Pizzeria Avanzato (Progettazione OOP con supporto Offline e Android Bridge)
+ * @description Gestore Comande Pizzeria Avanzato (OOP, Offline Support, Web Speech API e Internazionalizzazione i18n)
  */
 
 // Costanti di Configurazione Globali
@@ -8,8 +8,53 @@ const CONFIG = Object.freeze({
   COPERTO_COST: 1.50,
   CURRENCY_SYMBOL: '€',
   API_ENDPOINT: 'api.php',
-  STORAGE_KEY: 'pizzeria_current_order'
+  STORAGE_KEY: 'pizzeria_current_order',
+  LANG_STORAGE_KEY: 'pizzeria_preferred_lang'
 });
+
+// Dizionario Traduzioni (i18n)
+const TRANSLATIONS = {
+  it: {
+    emptyProducts: "Nessun prodotto trovato",
+    emptyCart: "Nessun elemento selezionato",
+    itemsCountOne: "1 articolo",
+    itemsCountMany: "{count} articoli",
+    itemNotePlaceholder: "Note (es. ben cotta)...",
+    cadPrice: "cad.",
+    ticketTitle: "Pizzeria - Comanda Tavolo",
+    ticketTable: "Tavolo",
+    ticketCovers: "Coperti",
+    ticketDate: "Data",
+    ticketTotal: "TOTALE",
+    ticketNotes: "Note",
+    alertEmptyCart: "Aggiungi almeno un articolo al carrello.",
+    alertPrivacy: "Accetta le condizioni sulla privacy per procedere.",
+    alertOrderSuccess: "Ordine inviato con successo per il Tavolo {table}!",
+    alertNetworkError: "Errore di connessione al server. Verificare la rete.",
+    alertVoiceUnsupported: "Riconoscimento vocale non supportato dal browser.",
+    alertVoiceActive: "Riconoscimento vocale già attivo."
+  },
+  en: {
+    emptyProducts: "No products found",
+    emptyCart: "No items selected",
+    itemsCountOne: "1 item",
+    itemsCountMany: "{count} items",
+    itemNotePlaceholder: "Notes (e.g. well done)...",
+    cadPrice: "each",
+    ticketTitle: "Pizzeria - Table Order",
+    ticketTable: "Table",
+    ticketCovers: "Covers",
+    ticketDate: "Date",
+    ticketTotal: "TOTAL",
+    ticketNotes: "Notes",
+    alertEmptyCart: "Please add at least one item to the cart.",
+    alertPrivacy: "Please accept the privacy policy to proceed.",
+    alertOrderSuccess: "Order successfully sent for Table {table}!",
+    alertNetworkError: "Server connection error. Please check your network.",
+    alertVoiceUnsupported: "Voice recognition is not supported by your browser.",
+    alertVoiceActive: "Voice recognition is already active."
+  }
+};
 
 // Database Prodotti Iniziale
 const PRODUCTS_DATA = [
@@ -26,11 +71,13 @@ class OrderManager {
     this.products = products;
     this.config = config;
     this.order = this.loadOrderFromStorage();
+    this.currentLang = localStorage.getItem(this.config.LANG_STORAGE_KEY) || 'it';
     this.recognition = null;
     
     this.initDOMReferences();
     this.initEventListeners();
     this.initVoiceRecognition();
+    this.setLanguage(this.currentLang);
     this.renderProducts(this.products);
     this.updateUI();
   }
@@ -68,6 +115,48 @@ class OrderManager {
     }
 
     this.setupCategoryFilters();
+    this.setupLanguageSwitcher();
+  }
+
+  // Supporto i18n / Traduzione
+  t(key, params = {}) {
+    let text = (TRANSLATIONS[this.currentLang] && TRANSLATIONS[this.currentLang][key]) || key;
+    Object.keys(params).forEach(p => {
+      text = text.replace(`{${p}}`, params[p]);
+    });
+    return text;
+  }
+
+  setLanguage(lang) {
+    if (!TRANSLATIONS[lang]) return;
+    this.currentLang = lang;
+    localStorage.setItem(this.config.LANG_STORAGE_KEY, lang);
+    document.documentElement.lang = lang;
+
+    // Aggiorna elementi statici HTML contrassegnati con data-i18n
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (TRANSLATIONS[lang][key]) {
+        el.textContent = TRANSLATIONS[lang][key];
+      }
+    });
+
+    // Aggiorna lo stato visivo dei pulsanti di selezione lingua
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+
+    // Rirenderizza componenti dinamici
+    this.renderProducts(this.products);
+    this.updateUI();
+  }
+
+  setupLanguageSwitcher() {
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        this.setLanguage(btn.dataset.lang);
+      });
+    });
   }
 
   // Persistence: LocalStorage
@@ -96,7 +185,7 @@ class OrderManager {
     if (items.length === 0) {
       this.dom.productsGrid.innerHTML = `
         <div class="empty-state">
-          <p>Nessun prodotto trovato</p>
+          <p>${this.t('emptyProducts')}</p>
         </div>`;
       return;
     }
@@ -109,7 +198,6 @@ class OrderManager {
       </div>
     `).join('');
 
-    // Event Delegation per performance
     this.dom.productsGrid.querySelectorAll('.product-card').forEach(card => {
       card.addEventListener('click', () => {
         const id = parseInt(card.dataset.id, 10);
@@ -186,7 +274,9 @@ class OrderManager {
 
     // Render Contatore Articoli
     if (this.dom.orderCount) {
-      this.dom.orderCount.textContent = `${itemCount} articol${itemCount === 1 ? 'o' : 'i'}`;
+      this.dom.orderCount.textContent = itemCount === 1 
+        ? this.t('itemsCountOne') 
+        : this.t('itemsCountMany', { count: itemCount });
     }
 
     // Render Lista Ordine
@@ -195,18 +285,18 @@ class OrderManager {
         this.dom.orderItems.innerHTML = `
           <div class="empty-state">
             <i class="fa-solid fa-basket-shopping"></i>
-            <p>Nessun elemento selezionato</p>
+            <p>${this.t('emptyCart')}</p>
           </div>`;
       } else {
         this.dom.orderItems.innerHTML = this.order.map(item => `
           <div class="item-row">
             <div class="item-details">
               <strong>${this.escapeHTML(item.name)}</strong>
-              <small class="text-muted">${this.config.CURRENCY_SYMBOL} ${item.price.toFixed(2)} cad.</small>
+              <small class="text-muted">${this.config.CURRENCY_SYMBOL} ${item.price.toFixed(2)} ${this.t('cadPrice')}</small>
               <input 
                 type="text" 
                 class="item-note-input" 
-                placeholder="Note (es. ben cotta)..." 
+                placeholder="${this.t('itemNotePlaceholder')}" 
                 value="${this.escapeHTML(item.note)}" 
                 data-id="${item.id}"
               />
@@ -233,7 +323,6 @@ class OrderManager {
   }
 
   bindItemRowEvents() {
-    // Gestione Eventi Dinamici per le note e i pulsanti quantita
     this.dom.orderItems.querySelectorAll('.item-note-input').forEach(input => {
       input.addEventListener('change', (e) => {
         const id = parseInt(e.target.dataset.id, 10);
@@ -254,22 +343,23 @@ class OrderManager {
     if (!this.dom.printableTicket) return;
 
     const tableNum = this.dom.tableNumber ? (this.dom.tableNumber.value || 'N/D') : 'N/D';
+    const dateLocale = this.currentLang === 'it' ? 'it-IT' : 'en-US';
     
     this.dom.printableTicket.innerHTML = `
-      <h3>Pizzeria - Comanda Tavolo</h3>
-      <p><strong>Tavolo:</strong> ${this.escapeHTML(tableNum)} | <strong>Coperti:</strong> ${covers}</p>
-      <p><strong>Data:</strong> ${new Date().toLocaleString('it-IT')}</p>
+      <h3>${this.t('ticketTitle')}</h3>
+      <p><strong>${this.t('ticketTable')}:</strong> ${this.escapeHTML(tableNum)} | <strong>${this.t('ticketCovers')}:</strong> ${covers}</p>
+      <p><strong>${this.t('ticketDate')}:</strong> ${new Date().toLocaleString(dateLocale)}</p>
       <hr>
       <ul style="list-style:none; padding:0;">
         ${this.order.map(i => `
           <li>
             ${i.quantity}x ${this.escapeHTML(i.name)} - ${this.config.CURRENCY_SYMBOL} ${(i.price * i.quantity).toFixed(2)}
-            ${i.note ? `<br><small><i>Note: ${this.escapeHTML(i.note)}</i></small>` : ''}
+            ${i.note ? `<br><small><i>${this.t('ticketNotes')}: ${this.escapeHTML(i.note)}</i></small>` : ''}
           </li>
         `).join('')}
       </ul>
       <hr>
-      <strong>TOTALE: ${this.config.CURRENCY_SYMBOL} ${grandTotal.toFixed(2)}</strong>
+      <strong>${this.t('ticketTotal')}: ${this.config.CURRENCY_SYMBOL} ${grandTotal.toFixed(2)}</strong>
     `;
   }
 
@@ -303,12 +393,10 @@ class OrderManager {
     if (!SpeechRecognition) return;
 
     this.recognition = new SpeechRecognition();
-    this.recognition.lang = 'it-IT';
     this.recognition.continuous = false;
 
     this.recognition.onresult = (event) => {
       const speechResult = event.results[0][0].transcript.toLowerCase();
-      console.log('Comando vocale ricevuto:', speechResult);
 
       this.products.forEach(product => {
         if (speechResult.includes(product.name.toLowerCase())) {
@@ -325,23 +413,24 @@ class OrderManager {
   startVoice() {
     if (this.recognition) {
       try {
+        this.recognition.lang = this.currentLang === 'it' ? 'it-IT' : 'en-US';
         this.recognition.start();
       } catch (e) {
-        console.warn('Riconoscimento vocale già attivo.');
+        alert(this.t('alertVoiceActive'));
       }
     } else {
-      alert('Riconoscimento vocale non supportato dal browser.');
+      alert(this.t('alertVoiceUnsupported'));
     }
   }
 
   // Network & Submit
   async sendOrder() {
     if (this.order.length === 0) {
-      return alert('Aggiungi almeno un articolo al carrello.');
+      return alert(this.t('alertEmptyCart'));
     }
 
     if (this.dom.privacyCheck && !this.dom.privacyCheck.checked) {
-      return alert('Accetta le condizioni sulla privacy per procedere.');
+      return alert(this.t('alertPrivacy'));
     }
 
     const { covers, grandTotal } = this.calculateTotals();
@@ -374,7 +463,7 @@ class OrderManager {
       const data = await response.json();
 
       if (data.status === 'success' || response.ok) {
-        alert(`Ordine inviato con successo per il Tavolo ${table}!`);
+        alert(this.t('alertOrderSuccess', { table }));
 
         // Bridge Nativo Android WebView
         if (window.AndroidBridge && typeof window.AndroidBridge.onOrderSent === 'function') {
@@ -385,7 +474,7 @@ class OrderManager {
       }
     } catch (error) {
       console.error('Errore durante l\'invio dell\'ordine:', error);
-      alert('Errore di connessione al server. Verificare la rete.');
+      alert(this.t('alertNetworkError'));
     }
   }
 
@@ -413,7 +502,8 @@ document.addEventListener('DOMContentLoaded', () => {
   appManager = new OrderManager(PRODUCTS_DATA, CONFIG);
 });
 
-// Funzioni Globali esposte per gli handler HTML esistenti
+// Funzioni Globali esposte per gli handler HTML
 function sendOrder() { appManager.sendOrder(); }
 function clearOrder() { appManager.clearOrder(); }
 function startVoiceRecognition() { appManager.startVoice(); }
+function toggleLanguage(lang) { appManager.setLanguage(lang); }
